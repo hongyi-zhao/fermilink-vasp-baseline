@@ -1,0 +1,11 @@
+
+Currently Loaded Modules:
+  1) oneapi/2024.2.0
+  2) fi_psm3_uuid
+  3) hdf5/1.14.4_3-oneapi.2024.2.0
+  4) wannier90/v3.1.0-serial-oneapi.2024.2.0
+  5) dftd4/devhub-oneapi.2024.2.0
+  6) vasp/6.6.0-oneapi.2024.2.0
+
+ 
+

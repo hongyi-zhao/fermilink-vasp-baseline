@@ -1,0 +1,82 @@
+{
+  "collisions": [],
+  "configured_dependency_package_ids": [],
+  "dependency_collisions": [],
+  "linked_dependency_packages": [],
+  "linked_entries": [
+    {
+      "mode": "symlink",
+      "name": "README.md",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/README.md"
+    },
+    {
+      "mode": "symlink",
+      "name": "README_ELPHON.md",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/README_ELPHON.md"
+    },
+    {
+      "mode": "symlink",
+      "name": "arch",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/arch"
+    },
+    {
+      "mode": "symlink",
+      "name": "bin",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/bin"
+    },
+    {
+      "mode": "symlink",
+      "name": "build",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/build"
+    },
+    {
+      "mode": "symlink",
+      "name": "makefile",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/makefile"
+    },
+    {
+      "mode": "symlink",
+      "name": "makefile.include",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/makefile.include"
+    },
+    {
+      "mode": "symlink",
+      "name": "skills",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/skills"
+    },
+    {
+      "mode": "symlink",
+      "name": "src",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/src"
+    },
+    {
+      "mode": "symlink",
+      "name": "testsuite",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/testsuite"
+    },
+    {
+      "mode": "symlink",
+      "name": "tools",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/tools"
+    }
+  ],
+  "missing_dependency_packages": [],
+  "missing_requested_entries": [],
+  "package_id": "vasp",
+  "package_path": "/home/werner/.fermilink/scientific_packages/packages/vasp",
+  "requested_entries": [
+    "README.md",
+    "README_ELPHON.md",
+    "arch",
+    "bin",
+    "build",
+    "makefile",
+    "makefile.include",
+    "skills",
+    "src",
+    "testsuite",
+    "tools"
+  ],
+  "updated_at": "2026-05-01T02:36:36.390434+00:00",
+  "version": 1
+}

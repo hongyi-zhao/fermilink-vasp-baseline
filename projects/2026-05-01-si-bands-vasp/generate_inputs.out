@@ -1,0 +1,4 @@
+Wrote VASP inputs in /home/werner/fermilink/vasp-demo/projects/2026-05-01-si-bands-vasp
+POTCAR source: /home/werner/Public/hpc/vasp/pot/potpaw_PBE/Si/POTCAR
+ENMAX lines:
+ENMAX  =  245.345; ENMIN  =  184.009 eV

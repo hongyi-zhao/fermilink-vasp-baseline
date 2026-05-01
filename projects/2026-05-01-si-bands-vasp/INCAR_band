@@ -1,0 +1,20 @@
+SYSTEM = Si_diamond_PBE_band_vasp
+GGA = PE
+ENCUT = 400
+EDIFF = 1E-6
+NELM = 100
+PREC = Accurate
+ALGO = Fast
+LREAL = .FALSE.
+IBRION = -1
+NSW = 0
+ISMEAR = 0
+SIGMA = 0.05
+LWAVE = .FALSE.
+KPAR = 2
+NCORE = 4
+
+ICHARG = 11
+LCHARG = .FALSE.
+LORBIT = 11
+NBANDS = 12
