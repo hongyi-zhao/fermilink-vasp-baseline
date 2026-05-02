@@ -213,10 +213,7 @@ def write_plot(
     ax.scatter([x[vbm_idx]], [0.0], s=26, color="#117a65", zorder=5, label="VBM")
     ax.scatter([x[cbm_idx]], [gap], s=26, color="#b03a2e", zorder=5, label="CBM")
     ax.set_xlim(float(x[0]), float(x[-1]))
-    ax.set_ylim(
-        max(-8.0, float(np.min(energies - vbm)) - 0.4),
-        min(8.0, float(np.max(energies - vbm)) + 0.4),
-    )
+    ax.set_ylim(-13.0, 10.0)
     ax.set_xticks(tick_positions)
     ax.set_xticklabels(tick_labels)
     ax.set_ylabel("Energy - VBM (eV)")
@@ -233,7 +230,7 @@ def write_summary(analysis: dict[str, object]) -> None:
     status = "done" if analysis["success_criteria_met"] else "failed"
     summary = f"""
 - prompt: Compute the electronic band structure of bulk silicon diamond with PBE in VASP 6.6.0 along L-G-X-W-K-G and cross-validate against the QE baseline.
--procedures: Generated VASP inputs for SCF (`8x8x8` Gamma-centered, `ENCUT=400 eV`, `EDIFF=1e-6`, `ISMEAR=0`, `SIGMA=0.05`, `LCHARG=.TRUE.`, `KPAR=2`, `NCORE=4`) and non-SCF band calculation (`ICHARG=11`, `NBANDS=12`, 36 points/segment line-mode `L-G-X-W-K-G` path). Ran the single-node SLURM chain with `oneapi/2024.2.0`, `vasp/6.6.0-oneapi.2024.2.0`, `--nodes=1 --ntasks=1 --cpus-per-task=8`, and Intel MPI `mpirun -np "${{SLURM_CPUS_PER_TASK}}"`.
+-procedures: Generated VASP inputs for SCF (`8x8x8` Gamma-centered, `ENCUT=400 eV`, `EDIFF=1e-6`, `ISMEAR=0`, `SIGMA=0.05`, `LCHARG=.TRUE.`, `KPAR=2`, `NCORE=4`) and non-SCF band calculation (`ICHARG=11`, `NBANDS=24`, 36 points/segment line-mode `L-G-X-W-K-G` path). Ran the single-node SLURM chain with `oneapi/2024.2.0`, `vasp/6.6.0-oneapi.2024.2.0`, `--nodes=1 --ntasks=1 --cpus-per-task=8`, and Intel MPI `mpirun -np "${{SLURM_CPUS_PER_TASK}}"`.
 - generated data: `OUTCAR_scf`, `OUTCAR_band`, `vasprun_scf.xml`, `vasprun_band.xml`, `EIGENVAL`, `band_analysis.json`, `stage_times.tsv`, `module_list.txt`; SCF electronic iterations = {analysis["scf_iter"]}, indirect gap = {analysis["indirect_gap_ev"]:.6f} eV.
 - generated figure: `bands.png`
 - key result: VBM at {vbm["expected_location"] if vbm["is_gamma"] else vbm["path_location"]["segment"]}; CBM on {cbm["path_location"]["segment"]} at fraction {cbm["path_location"]["fraction"]:.6f}; QE reference gap = {QE_GAP_EV:.3f} eV, VASP-QE gap delta = {analysis["gap_delta_vs_qe_ev"]:.6f} eV.

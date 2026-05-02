@@ -9,13 +9,23 @@ from pathlib import Path
 
 cwd = Path.cwd()
 
-# ---- find OUTCAR (prefer plain OUTCAR, fall back to OUTCAR_*) ----
-outcar = cwd / "OUTCAR"
-if not outcar.exists():
-    cands = sorted(cwd.glob("OUTCAR*"), key=lambda p: p.stat().st_mtime, reverse=True)
-    if not cands:
-        print("[perf] no OUTCAR found", file=sys.stderr); sys.exit(0)
-    outcar = cands[0]
+# ---- find OUTCAR ----
+# Priority: PERF_OUTCAR_PATH env var (per goal.md SITE FACTS rule 5)
+#   > cwd/OUTCAR (default)
+#   > most recent OUTCAR* by mtime (fallback)
+_perf_outcar_env = os.environ.get("PERF_OUTCAR_PATH", "").strip()
+if _perf_outcar_env:
+    outcar = cwd / _perf_outcar_env
+    if not outcar.exists():
+        print(f"[perf] PERF_OUTCAR_PATH={_perf_outcar_env} but file not found in {cwd}", file=sys.stderr)
+        sys.exit(0)
+else:
+    outcar = cwd / "OUTCAR"
+    if not outcar.exists():
+        cands = sorted(cwd.glob("OUTCAR*"), key=lambda p: p.stat().st_mtime, reverse=True)
+        if not cands:
+            print("[perf] no OUTCAR found", file=sys.stderr); sys.exit(0)
+        outcar = cands[0]
 otxt = outcar.read_text(errors="ignore")
 
 # ---- read INCAR for parallelization keys ----

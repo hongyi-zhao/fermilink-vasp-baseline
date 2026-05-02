@@ -89,6 +89,7 @@ postprocess() {
     cp EIGENVAL EIGENVAL_band || return $?
     "$PYTHON" postprocess_bands.py > postprocess.log 2>&1 || return $?
     ln -sfn ../../_perf_append.py _perf_append.py || return $?
+    export PERF_OUTCAR_PATH=OUTCAR_band
     "$PYTHON" _perf_append.py > perf_append.log 2>&1 || return $?
     cp OUTCAR_band OUTCAR || return $?
 }

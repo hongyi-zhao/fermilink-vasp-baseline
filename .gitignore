@@ -1,0 +1,30 @@
+
+# VASP transient outputs - regenerable from inputs+sbatch
+projects/*/CHG
+projects/*/CHGCAR
+projects/*/WAVECAR
+projects/*/DOSCAR
+projects/*/PROCAR
+projects/*/IBZKPT
+projects/*/PCDAT
+projects/*/REPORT
+projects/*/XDATCAR
+projects/*/CONTCAR
+projects/*/vaspout.h5
+projects/*/vasp_*.out
+
+# VASP outputs that were renamed by run.sh stage logic
+# (the OUTCAR file that ends up in cwd is regenerable; the *_scf
+# and *_band copies are the canonical ones we keep in git)
+projects/*/OUTCAR
+projects/*/EIGENVAL
+projects/*/OSZICAR
+projects/*/vasprun.xml
+
+# logger transient
+projects/*/perf_append.log
+projects/*/postprocess.log
+projects/*/stage_times.tsv
+
+# Bash backup
+*.bak
