@@ -1,11 +1,57 @@
 # FermiLink Unified Memory
 
 - schema_version: 1
-- started_at_utc: 2026-05-01T02:36:16.103963Z
-- last_updated_utc: 2026-05-01T02:51:50Z
+- started_at_utc: 2026-05-02T09:08:18.602360Z
+- last_updated_utc: 2026-05-02T09:43:44Z
 - prompt_source: /home/werner/fermilink/vasp-demo/goal.md
 
 ## Original request
+## SITE FACTS — read first, override any conflicting skill defaults
+
+This site has the FULL VASP POTCAR collection at
+`~/Public/hpc/vasp/pot/`, including all releases:
+  potpaw_LDA, potpaw_LDA.52, potpaw_LDA.54, potpaw_LDA.64
+  potpaw_PBE, potpaw_PBE.52, potpaw_PBE.54, potpaw_PBE.64
+  potUSPP_LDA, potUSPP_GGA
+
+ALWAYS use the .64 release (PBE_64 in pymatgen, the latest
+VASP 5.4.4+ PAW dataset with SHA256 hashes and COPYR fields).
+The unsuffixed potpaw_PBE/ is the outdated 2010 release that
+VASP officially marks as "not supported".
+
+Required POTCAR path:
+    ~/Public/hpc/vasp/pot/potpaw_PBE.64/<E>/POTCAR
+    e.g. ~/Public/hpc/vasp/pot/potpaw_PBE.64/Si/POTCAR
+
+In run.sh use:
+    export VASP_PP=~/Public/hpc/vasp/pot
+    cat $VASP_PP/potpaw_PBE.64/Si/POTCAR > POTCAR
+
+In generate_inputs.py:
+    pp_root = os.environ.get("VASP_PP", "/home/werner/Public/hpc/vasp/pot")
+    potcar_src = Path(pp_root) / "potpaw_PBE.64" / "Si" / "POTCAR"
+DO NOT hardcode potpaw_PBE/ (without .64) anywhere.
+
+VASP module:  vasp/6.6.0-oneapi.2024.2.0
+              (load oneapi/2024.2.0 first)
+
+Site shell quirk: ~/.bashrc has nvm with unbound vars; sbatch
+must wrap module load with set +u ... set -u.
+
+Python interpreter for postprocessing:
+    /home/werner/.pyenv/versions/datasci/bin/python
+
+Cleanup convention: after summary.md is finalized, the agent must
+mechanically grep this goal.md for any of:
+    nscf bands wannier fat-band projwfc restart kpoints_opt
+        wannier90 irvsp vasp2trace continuation hse hybrid
+If matched: keep WAVECAR. If not matched: rm -f WAVECAR.
+ALWAYS keep CHGCAR, OUTCAR, vasprun.xml, EIGENVAL.
+Append to summary.md a line:
+    cleanup_decision: <kept WAVECAR | pruned WAVECAR>
+
+---
+
 # Goal: Si band structure with PBE using VASP (parity check vs Q-E)
 
 Compute the electronic band structure of bulk silicon (diamond,
@@ -91,54 +137,67 @@ After this passes, next quest is FeTaSe2 HSE+SOC reproduction.
 ## Short-Term Memory (Operational)
 
 ### Plan
-- [x] Inspect VASP package skills, QE comparator, modules, pseudopotential path, and prior perf log.
-- [x] Create `projects/2026-05-01-si-bands-vasp/` and generate SCF/band inputs plus helper scripts.
-- [x] Review generated VASP inputs against package guidance and requested settings.
-- [x] Submit the single-node SLURM chain job and record the job id.
-- [x] Monitor job completion and collect SCF/band artifacts.
-- [x] Postprocess band structure, create `band_analysis.json` and `bands.png`.
-- [x] Cross-validate VASP gap/topology against the QE baseline and acceptance window.
-- [x] Append VASP perf log entry and finalize `summary.md`.
-- [x] Update persistent memory with file map, parameter provenance, uncertainties, and results.
+- [x] Read project memory, package docs/skills, perf log, and site prerequisites.
+- [x] Generate `projects/2026-05-02-si-bands-vasp/` inputs and helper scripts using PBE `.64` Si POTCAR.
+- [x] Review generated INCAR/KPOINTS/POTCAR/run script against requested settings and site SLURM rules.
+- [x] Submit the single-node SLURM run chaining prepare, SCF, band, and postprocess stages.
+- [x] Monitor SLURM completion and inspect logs/stage timings.
+- [x] Validate parsed band gap, VBM/CBM locations, SCF iterations, and plot artifact.
+- [x] Finalize `summary.md`, cleanup WAVECAR according to `goal.md`, and record perf/memory results.
+- [x] Verify deliverables are present and close the loop.
 
 ### Progress log
 - initialized
-- 2026-05-01T02:46:18Z: Prepared `projects/2026-05-01-si-bands-vasp/` with VASP SCF/band inputs, generator, postprocessor, SLURM chain script, copied Si POTCAR, and `_perf_append.py` symlink.
-- 2026-05-01T02:51:50Z: Completed SLURM job `26534`, generated `band_analysis.json` and `bands.png`, appended VASP perf log, and finalized `summary.md`.
+- 2026-05-02T09:10:31Z: Preflight checked empty `skills/`, README, existing perf log, SLURM commands, module availability, `.64` Si POTCAR ENMAX, and datasci Python imports; no project files created yet.
+- 2026-05-02T09:17:44Z: Created and reviewed `projects/2026-05-02-si-bands-vasp/` generator, postprocessor, SLURM script, POSCAR, INCARs, KPOINTS, POTCAR, and initial summary; no job submitted yet.
+- 2026-05-02T09:20:19Z: Submitted job `26536`, observed immediate failure because `run.sh` used `BASH_SOURCE[0]` under `sbatch` spool context, then patched it to prefer `SLURM_SUBMIT_DIR` before resubmission.
+- 2026-05-02T09:22:46Z: Submitted job `26537`; module and prepare stages succeeded, SCF failed because Open MPI saw one SLURM slot under `--ntasks=1 --cpus-per-task=8`; patched `mpirun --oversubscribe -np ${SLURM_CPUS_PER_TASK}`.
+- 2026-05-02T09:27:06Z: Submitted job `26538`; SCF still failed because the wrong MPI launcher could not resolve `vasp_std`; patched `run.sh` to call absolute Intel MPI `/opt/intel/oneapi/2024.2.0/mpi/2021.13/bin/mpirun` and absolute `vasp_std`.
+- 2026-05-02T09:29:33Z: Submitted job `26539`; SCF failed because module/path variables set inside a subshell stage were lost; patched `stage()` to preserve environment and added explicit command-failure returns.
+- 2026-05-02T09:36:52Z: Completed job `26540` but the result missed physics targets (`gap=0.2517 eV`, VBM off-Gamma) because the band run used default `NBANDS=8` and the lightweight postprocess path was inadequate; regenerated inputs with `NBANDS=12`, direct `EIGENVAL` analysis, and submitted corrected job `26541`.
+- 2026-05-02T09:43:44Z: Job `26541` met physics acceptance (`gap=0.572568 eV`, VBM at Gamma, CBM at 0.828571 along G-X); reran once as `26542` with `LWAVE=True` to keep a non-empty `WAVECAR`, refreshed `band_analysis.json`, appended perf logging, and finalized `summary.md`.
 
 ## Long-Term Memory (Persistent)
 
 ### File map
 - (path | purpose | notes)
-- `projects/2026-05-01-si-bands-vasp/generate_inputs.py` | generates Si diamond POSCAR, INCAR/KPOINTS files, copies Si PAW PBE POTCAR, and creates `_perf_append.py` symlink | uses direct FCC `L-G-X-W-K-G` line-mode path with 36 points/segment.
-- `projects/2026-05-01-si-bands-vasp/run.sh` | single-node SLURM chain for prepare, SCF, band, postprocess, and perf append | job profile: `batch`, `--nodes=1 --ntasks=1 --cpus-per-task=8`, `oneapi/2024.2.0`, `vasp/6.6.0-oneapi.2024.2.0`.
-- `projects/2026-05-01-si-bands-vasp/postprocess_bands.py` | parses `vasprun_band.xml` with pymatgen `BSVasprun` when available and direct `EIGENVAL`, writes `band_analysis.json` and `bands.png` | records VBM/CBM path locations and QE comparison.
+- projects/2026-05-02-si-bands-vasp/generate_inputs.py | reproducible input generator | writes primitive 2-atom Si POSCAR, 8x8x8 Gamma KPOINTS, L-G-X-W-K-G line-mode KPOINTS, INCARs, and `.64` Si POTCAR.
+- projects/2026-05-02-si-bands-vasp/run.sh | single-node SLURM pipeline | loads oneapi then VASP 6.6.0, runs prepare/SCF/band/postprocess stages with 8 CPUs, KPAR=2, NCORE=4.
+- projects/2026-05-02-si-bands-vasp/postprocess_bands.py | result parser/plotter | parses `vasprun_band.xml` with pymatgen, writes `band_analysis.json` and `bands.png`.
 
 ### Simulation history
 - (run_id | objective | status | artifacts | notes)
-- `2026-05-01-si-bands-vasp` | VASP PBE Si diamond band parity check vs QE baseline | done, SLURM job `26534` exit `0:0` | `OUTCAR_scf`, `OUTCAR_band`, `vasprun_scf.xml`, `vasprun_band.xml`, `EIGENVAL`, `band_analysis.json`, `bands.png`, `stage_times.tsv`, `module_list.txt` | earlier jobs `26532` and `26533` exposed script environment issues before final clean rerun.
+- 26536 | Si PBE band structure smoke test | failed before stage start | projects/2026-05-02-si-bands-vasp/slurm-26536.err | `stage_times.tsv` write failed in `/var/spool/slurmd/...`; fixed by switching project root detection to `SLURM_SUBMIT_DIR`.
+- 26537 | Si PBE band structure smoke test | failed at SCF launch | projects/2026-05-02-si-bands-vasp/vasp_scf.err | Open MPI reported not enough slots for 8 ranks with `--ntasks=1 --cpus-per-task=8`; `run.sh` patched to add `--oversubscribe`.
+- 26538 | Si PBE band structure smoke test | failed at SCF launch | projects/2026-05-02-si-bands-vasp/vasp_scf.err | MPI reported `vasp_std` not found on ranks; host has an `mpirun` shell function and multiple MPI launchers, so `run.sh` now calls absolute Intel MPI and absolute VASP paths.
+- 26539 | Si PBE band structure smoke test | failed at SCF launch | projects/2026-05-02-si-bands-vasp/vasp_scf.err | `VASP_STD` was empty because `load_modules` ran in a subshell; `stage()` now preserves environment and guarded functions return immediately on failed commands.
+- 26540 | Si PBE band structure smoke test | completed but failed acceptance | projects/2026-05-02-si-bands-vasp/band_analysis.json | raw run succeeded; analysis showed `gap=0.2517 eV`, VBM off-Gamma, `NBANDS=8`; corrected inputs and postprocessing were prepared for rerun `26541`.
+- 26541 | Si PBE band structure smoke test | completed and accepted | projects/2026-05-02-si-bands-vasp/band_analysis.json | `NBANDS=12` plus direct `EIGENVAL` path analysis restored expected Si indirect gap and QE parity.
+- 26542 | Si PBE band structure smoke test final artifact pass | completed and accepted | projects/2026-05-02-si-bands-vasp/WAVECAR | repeated accepted run with `LWAVE=True` so cleanup rule could keep a real `WAVECAR`.
 
 ### Key results
 - (result_id | metric | value | conditions | evidence_path)
-- `2026-05-01-si-bands-vasp-gap` | indirect gap | `0.572503 eV` | VASP 6.6.0 PBE, Si standard PAW PBE, `ENCUT=400 eV`, Gamma-centered `8x8x8` SCF, line-mode `L-G-X-W-K-G` band path | `projects/2026-05-01-si-bands-vasp/band_analysis.json`
-- `2026-05-01-si-bands-vasp-topology` | VBM/CBM location | VBM at Gamma; CBM on Gamma-X at fraction `0.828571`; QE gap delta `0.002497 eV` | direct EIGENVAL parser and pymatgen `BSVasprun` agree | `projects/2026-05-01-si-bands-vasp/band_analysis.json`
-- `2026-05-01-si-bands-vasp-scf` | SCF convergence | 13 electronic iterations, within 30-iteration criterion | final clean job `26534`; `EDIFF=1e-6` reached | `projects/2026-05-01-si-bands-vasp/OUTCAR_scf`
+- si-vasp-gap-2026-05-02 | indirect gap | 0.572568 eV | VASP 6.6.0 PBE, Si primitive cell, `.64` Si PAW PBE, `ENCUT=400 eV`, `8x8x8` Gamma SCF, `NBANDS=12`, 36-point/segment `L-G-X-W-K-G` line path | projects/2026-05-02-si-bands-vasp/band_analysis.json
+- si-vasp-topology-2026-05-02 | VBM/CBM location | VBM at Gamma; CBM on `G-X` at fraction 0.828571 | same accepted run as above; direct `EIGENVAL` parser and pymatgen `BSVasprun` agree on the indirect topology | projects/2026-05-02-si-bands-vasp/band_analysis.json
+- si-vasp-qe-parity-2026-05-02 | VASP minus QE gap delta | -0.002432 eV | QE reference gap 0.575 eV from paired Si baseline; within 0.1 eV acceptance by a wide margin | projects/2026-05-02-si-bands-vasp/band_analysis.json
 
 ### Parameter source mapping
 - (run_id | parameter_or_setting | value | source | evidence_path | notes)
-- `2026-05-01-si-bands-vasp` | lattice and basis | diamond Si primitive, `a=5.43 Angstrom`, 2 atoms | original request | `projects/2026-05-01-si-bands-vasp/POSCAR` | fixed input, no relaxation.
-- `2026-05-01-si-bands-vasp` | VASP SCF settings | `ENCUT=400`, `EDIFF=1E-6`, `ISMEAR=0`, `SIGMA=0.05`, `LCHARG=.TRUE.`, Gamma `8x8x8` | original request plus VASP electronic-structure skill guidance | `projects/2026-05-01-si-bands-vasp/INCAR_scf`, `projects/2026-05-01-si-bands-vasp/KPOINTS_scf` | `ENCUT/ENMAX=1.630357`.
-- `2026-05-01-si-bands-vasp` | band settings | `ICHARG=11`, `NBANDS=12`, 36 points/segment `L-G-X-W-K-G` | original request; direct FCC path fallback because pymatgen import was initially absent in interactive Python before job environment | `projects/2026-05-01-si-bands-vasp/INCAR_band`, `projects/2026-05-01-si-bands-vasp/KPOINTS_band` | final postprocess did have pymatgen available and used `BSVasprun`.
-- `2026-05-01-si-bands-vasp` | pseudopotential | Si standard PAW PBE POTCAR, `ENMAX=245.345 eV` | `/home/werner/Public/hpc/vasp/pot/potpaw_PBE/Si/POTCAR` | `projects/2026-05-01-si-bands-vasp/POTCAR`, `projects/2026-05-01-si-bands-vasp/potcar_enmax.txt` | `$VASP_PP` was not set by module in interactive shell, so run script defaults it to `/home/werner/Public/hpc/vasp/pot`.
-- `2026-05-01-si-bands-vasp` | performance settings | `--cpus-per-task=8`, `KPAR=2`, `NCORE=4` | original resource hint; no previous VASP perf log existed | `projects/2026-05-01-si-bands-vasp/run.sh`, `/home/werner/fermilink/vasp-demo/perf_log.jsonl` | perf log appended job `26534`.
+- 2026-05-02-si-bands-vasp | POTCAR | `/home/werner/Public/hpc/vasp/pot/potpaw_PBE.64/Si/POTCAR` | site facts override | projects/2026-05-02-si-bands-vasp/generate_inputs.py | ENMAX checked as 245.345 eV, so ENCUT=400 eV is above 1.3x ENMAX.
+- 2026-05-02-si-bands-vasp | SCF settings | ENCUT=400, EDIFF=1e-6, ISMEAR=0, SIGMA=0.05, 8x8x8 Gamma, LCHARG=True | original request | projects/2026-05-02-si-bands-vasp/INCAR_scf | generated and reviewed before submission.
+- 2026-05-02-si-bands-vasp | band path | L-G-X-W-K-G, 36 points/segment, ICHARG=11 | original request plus pymatgen HighSymmKpath coordinates | projects/2026-05-02-si-bands-vasp/KPOINTS_band | band INCAR sets ISYM=0.
+- 2026-05-02-si-bands-vasp | accepted band settings | `ICHARG=11`, `ISYM=0`, `NBANDS=12`, `LWAVE=True`, `LORBIT=11` | original request plus prior passing local recipe for Si parity | projects/2026-05-02-si-bands-vasp/INCAR_band | `NBANDS=12` was required to recover the expected indirect gap.
+- 2026-05-02-si-bands-vasp | SLURM resources | partition=batch, nodes=1, ntasks=1, cpus-per-task=8, time=24:00:00 | execution target and prior perf log | projects/2026-05-02-si-bands-vasp/run.sh | prior same-system perf favored 8 CPUs, KPAR=2, NCORE=4.
 
 ### Simulation uncertainty
 - (run_id | uncertainty_or_assumption | impact | mitigation_or_next_step | status)
-- `2026-05-01-si-bands-vasp` | initial interactive Python lacked pymatgen, so the generated path used explicit FCC coordinates rather than `HighSymmKpath` | low; path is the standard FCC `L-G-X-W-K-G` path and final job environment had pymatgen for `BSVasprun` parsing | if future workflows require generated paths for lower-symmetry structures, pin the same Python env at generation time or use vaspkit 303 | closed for this cubic Si case.
-- `2026-05-01-si-bands-vasp` | VASP module did not export `$VASP_PP` in interactive shell | run would fail to find POTCAR if relying only on `$VASP_PP` | `run.sh` sets default `VASP_PP=/home/werner/Public/hpc/vasp/pot` and generator allows `VASP_SI_POTCAR` override | mitigated.
-- `2026-05-01-si-bands-vasp` | first job `26532` failed because `module` startup hit `nvm: unbound variable` under `set -u`; job `26533` failed postprocess due Python without matplotlib after module purge | could cause false failed jobs despite valid VASP inputs | final `run.sh` disables nounset during module calls and pins `/home/werner/.pyenv/versions/datasci/bin/python` for Python stages | fixed in final job `26534`.
+- 2026-05-02-si-bands-vasp | `skills/` directory is absent in this checkout | no package-local VASP recipe beyond README and supplied site facts | used supplied request, README, prior perf log, and direct module/POTCAR checks | validated by accepted jobs 26541 and 26542.
+- 2026-05-02-si-bands-vasp | `sbatch` executes a spooled script path, so `BASH_SOURCE[0]` is not the project directory | can break relative outputs before stage execution | patched `run.sh` to use `SLURM_SUBMIT_DIR` first | validated by accepted jobs 26541 and 26542.
+- 2026-05-02-si-bands-vasp | Open MPI slot detection with single SLURM task exposes only 1 slot though 8 CPUs are allocated | can prevent `mpirun -np 8` launch | final script uses the absolute Intel MPI launcher with site-required `--ntasks=1 --cpus-per-task=8` | validated by accepted jobs 26541 and 26542.
+- 2026-05-02-si-bands-vasp | `mpirun` name is a shell function with multiple external MPI candidates in PATH | can select an MPI launcher incompatible with the VASP build | call absolute Intel MPI launcher and absolute VASP binary in `run.sh` | validated by accepted jobs 26541 and 26542.
+- 2026-05-02-si-bands-vasp | stage functions that load modules cannot run in subshells | module and executable variables vanish before SCF/band stages | patched `stage()` to call functions in the parent shell and added explicit failure guards | validated by accepted jobs 26541 and 26542.
+- 2026-05-02-si-bands-vasp | a band run with default `NBANDS=8` underestimates the Si indirect gap and shifts the apparent VBM away from Gamma | invalidates QE parity and gap acceptance checks | resolved by accepted reruns with `NBANDS=12` and direct `EIGENVAL` path analysis | closed.
 
 ### Suggested skills updates
 - (<package_id> | issue_pattern | proposed_skill_update | evidence | status)
-- `vasp` | site VASP module may not set `$VASP_PP` and `module purge/load` can interact badly with `set -u`/nvm | document a site-safe `run.sh` template: start with ulimit commands, use `set -eo pipefail`, wrap module calls with `set +u` then restore `set -u`, default `VASP_PP=/home/werner/Public/hpc/vasp/pot`, and pin a known Python with plotting/pymatgen for postprocessing | jobs `26532`, `26533`, final fixed job `26534` in `projects/2026-05-01-si-bands-vasp/` | proposed
-- `vasp` | perf append should record SCF metrics in chained SCF+band workflows | before calling `_perf_append.py`, restore `INCAR_scf` to `INCAR` and `OUTCAR_scf` to `OUTCAR`; otherwise helper may read the final band OUTCAR | `projects/2026-05-01-si-bands-vasp/run.sh` | proposed
+- vasp-demo | single-node SLURM launcher ambiguity and Si band underfill | encode `SLURM_SUBMIT_DIR` usage, absolute Intel MPI launcher, and `NBANDS=12` for small Si band baselines in package guidance | jobs 26536-26540 failed or misanalyzed until these fixes were applied; jobs 26541-26542 passed | open

@@ -1,0 +1,12 @@
+[stage:module] start 2026-05-02T17:40:39+08:00
+[stage:module] end 2026-05-02T17:40:40+08:00 status=0 elapsed=1s
+[stage:prepare] start 2026-05-02T17:40:40+08:00
+Generated VASP inputs in /home/werner/fermilink/vasp-demo/projects/2026-05-02-si-bands-vasp
+POTCAR source: /home/werner/Public/hpc/vasp/pot/potpaw_PBE.64/Si/POTCAR
+[stage:prepare] end 2026-05-02T17:40:43+08:00 status=0 elapsed=3s
+[stage:scf] start 2026-05-02T17:40:43+08:00
+[stage:scf] end 2026-05-02T17:40:45+08:00 status=0 elapsed=2s
+[stage:band] start 2026-05-02T17:40:45+08:00
+[stage:band] end 2026-05-02T17:40:52+08:00 status=0 elapsed=7s
+[stage:postprocess] start 2026-05-02T17:40:52+08:00
+[stage:postprocess] end 2026-05-02T17:40:54+08:00 status=0 elapsed=2s
