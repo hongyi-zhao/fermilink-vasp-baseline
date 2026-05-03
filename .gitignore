@@ -1,5 +1,6 @@
+# ===== VASP transient outputs =====
 
-# VASP transient outputs - regenerable from inputs+sbatch
+# Flat layout (legacy, kept for compat with older projects/)
 projects/*/CHG
 projects/*/CHGCAR
 projects/*/WAVECAR
@@ -12,19 +13,36 @@ projects/*/XDATCAR
 projects/*/CONTCAR
 projects/*/vaspout.h5
 projects/*/vasp_*.out
-
-# VASP outputs that were renamed by run.sh stage logic
-# (the OUTCAR file that ends up in cwd is regenerable; the *_scf
-# and *_band copies are the canonical ones we keep in git)
 projects/*/OUTCAR
 projects/*/EIGENVAL
 projects/*/OSZICAR
 projects/*/vasprun.xml
-
-# logger transient
 projects/*/perf_append.log
 projects/*/postprocess.log
 projects/*/stage_times.tsv
 
-# Bash backup
-*.bak
+# Sub-directory layout (current canonical)
+projects/*/*/CHG
+projects/*/*/CHGCAR
+projects/*/*/WAVECAR
+projects/*/*/DOSCAR
+projects/*/*/PROCAR
+projects/*/*/IBZKPT
+projects/*/*/PCDAT
+projects/*/*/REPORT
+projects/*/*/XDATCAR
+projects/*/*/CONTCAR
+projects/*/*/vaspout.h5
+projects/*/*/vasp.out
+projects/*/*/vasp.err
+projects/*/*/EIGENVAL
+projects/*/*/vasprun.xml
+
+# Logs subdir
+projects/*/logs/
+
+# ===== Generic =====
+**/__pycache__/
+**/*.bak
+*.pyc
+**/.codex/

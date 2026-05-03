@@ -147,6 +147,15 @@ parens are fine.
    it on every completion checkpoint. Site overrides go in goal.md
    under a `## SITE FACTS` heading.
 
+6. **Trusting textbook SLURM resource layout without site testing** —
+   Job 26548 (2026-05-03) used the "correct" --ntasks=N --cpus-per-task=1
+   layout that atomate2, pymatgen examples, and standard MPI tutorials
+   recommend. On this site, all 8 VASP MPI ranks ended up bound to CPU 0
+   via SLURM cgroup + Intel MPI Hydra srun bstrap_proxy interaction.
+   100× slowdown, killed after 10+ min. Empirical truth: this site needs
+   --ntasks=1 --cpus-per-task=N. Always sbatch-validate any SLURM resource
+   change before committing to SITE FACTS.
+
 ## Workspace state at end of session
 
 ~/fermilink/

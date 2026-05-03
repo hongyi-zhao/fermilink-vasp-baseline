@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Generate VASP inputs for primitive diamond Si PBE band structure."""
+"""Generate VASP inputs for primitive diamond Si PBE band structure.
+
+Writes all canonical inputs to ../inputs/ relative to scripts/.
+"""
 import os
 import shutil
 from pathlib import Path
@@ -10,7 +13,10 @@ from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
 from pymatgen.symmetry.bandstructure import HighSymmKpath
 
 
-PROJECT = Path(__file__).resolve().parent
+SCRIPTS = Path(__file__).resolve().parent
+PROJECT = SCRIPTS.parent
+INPUTS = PROJECT / "inputs"
+INPUTS.mkdir(exist_ok=True)
 PP_ROOT = Path(os.environ.get("VASP_PP", "/home/werner/Public/hpc/vasp/pot")).expanduser()
 POTCAR_SRC = PP_ROOT / "potpaw_PBE.64" / "Si" / "POTCAR"
 
@@ -62,8 +68,8 @@ def write_incar_files() -> None:
             "NBANDS": 24,
         }
     )
-    Incar(scf).write_file(PROJECT / "INCAR_scf")
-    Incar(band).write_file(PROJECT / "INCAR_band")
+    Incar(scf).write_file(INPUTS / "INCAR_scf")
+    Incar(band).write_file(INPUTS / "INCAR_band")
 
 
 def write_kpoints_band(structure: Structure) -> None:
@@ -78,7 +84,7 @@ def write_kpoints_band(structure: Structure) -> None:
         ("G", coords["\\Gamma"]),
     ]
     points_per_segment = 36
-    with (PROJECT / "KPOINTS_band").open("w") as handle:
+    with (INPUTS / "KPOINTS_band").open("w") as handle:
         handle.write("Si band path L-G-X-W-K-G, 36 points per segment\n")
         handle.write(f"{points_per_segment}\n")
         handle.write("Line-mode\n")
@@ -97,15 +103,15 @@ def main() -> None:
         raise FileNotFoundError(f"Required POTCAR not found: {POTCAR_SRC}")
     structure = primitive_si()
     Poscar(structure, comment="Si diamond primitive cell, a=5.43 Angstrom").write_file(
-        PROJECT / "POSCAR"
+        INPUTS / "POSCAR"
     )
     Kpoints.gamma_automatic(kpts=(8, 8, 8), shift=(0, 0, 0)).write_file(
-        PROJECT / "KPOINTS_scf"
+        INPUTS / "KPOINTS_scf"
     )
     write_kpoints_band(structure)
     write_incar_files()
-    shutil.copyfile(POTCAR_SRC, PROJECT / "POTCAR")
-    print(f"Generated VASP inputs in {PROJECT}")
+    shutil.copyfile(POTCAR_SRC, INPUTS / "POTCAR")
+    print(f"Generated VASP inputs in {INPUTS}")
     print(f"POTCAR source: {POTCAR_SRC}")
 
 

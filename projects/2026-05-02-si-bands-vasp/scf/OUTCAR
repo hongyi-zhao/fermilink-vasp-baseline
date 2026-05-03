@@ -1,6 +1,6 @@
  vasp.6.6.0 06Mar2026 (build Apr 30 2026 15:36:16) complex                      
   
- executed on             LinuxIFC date 2026.05.02  22:07:26
+ executed on             LinuxIFC date 2026.05.03  11:18:51
  running    8 mpi-ranks, on    1 nodes
  distrk:  each k-point on    4 cores,    2 groups
  distr:  one band on NCORE=   4 cores,    1 groups
@@ -645,7 +645,7 @@ Coulomb truncation method
    one-center                              :          3. kBytes
    wavefun                                 :        727. kBytes
  
-     INWAV:  cpu time      0.0000: real time      0.0001
+     INWAV:  cpu time      0.0000: real time      0.0000
  Broyden mixing: mesh for mixing (old mesh)
    NGX = 13   NGY = 13   NGZ = 13
   (NGX  = 56   NGY  = 56   NGZ  = 56)
@@ -670,7 +670,7 @@ Coulomb truncation method
  Maximum number of real-space cells   3x   3x   3
  Maximum number of reciprocal cells   3x   3x   3
 
-    FEWALD:  cpu time      0.0007: real time      0.0007
+    FEWALD:  cpu time      0.0006: real time      0.0006
 
 
 --------------------------------------- Ionic step        1  -------------------------------------------
@@ -681,12 +681,12 @@ Coulomb truncation method
 --------------------------------------- Iteration      1(   1)  ---------------------------------------
 
 
-    POTLOK:  cpu time      0.0175: real time      0.0175
-    SETDIJ:  cpu time      0.0014: real time      0.0014
-     EDDAV:  cpu time      0.0506: real time      0.0506
-       DOS:  cpu time      0.0003: real time      0.0003
+    POTLOK:  cpu time      0.0153: real time      0.0153
+    SETDIJ:  cpu time      0.0012: real time      0.0012
+     EDDAV:  cpu time      0.0378: real time      0.0379
+       DOS:  cpu time      0.0002: real time      0.0002
     --------------------------------------------
-      LOOP:  cpu time      0.0701: real time      0.0702
+      LOOP:  cpu time      0.0546: real time      0.0547
 
  eigenvalue-minimisations  :   464
  total energy-change (2. order) : 0.5284431E+01  (-0.2986455E+03)
@@ -720,10 +720,10 @@ Coulomb truncation method
 --------------------------------------- Iteration      1(   2)  ---------------------------------------
 
 
-     EDDAV:  cpu time      0.0688: real time      0.0689
-       DOS:  cpu time      0.0002: real time      0.0002
+     EDDAV:  cpu time      0.0516: real time      0.0516
+       DOS:  cpu time      0.0001: real time      0.0001
     --------------------------------------------
-      LOOP:  cpu time      0.0689: real time      0.0690
+      LOOP:  cpu time      0.0517: real time      0.0517
 
  eigenvalue-minimisations  :   728
  total energy-change (2. order) :-0.1610419E+02  (-0.1555036E+02)
@@ -757,10 +757,10 @@ Coulomb truncation method
 --------------------------------------- Iteration      1(   3)  ---------------------------------------
 
 
-     EDDAV:  cpu time      0.0539: real time      0.0540
-       DOS:  cpu time      0.0002: real time      0.0001
+     EDDAV:  cpu time      0.0413: real time      0.0414
+       DOS:  cpu time      0.0001: real time      0.0001
     --------------------------------------------
-      LOOP:  cpu time      0.0540: real time      0.0541
+      LOOP:  cpu time      0.0414: real time      0.0415
 
  eigenvalue-minimisations  :   552
  total energy-change (2. order) :-0.2008452E+00  (-0.2008452E+00)
@@ -794,10 +794,10 @@ Coulomb truncation method
 --------------------------------------- Iteration      1(   4)  ---------------------------------------
 
 
-     EDDAV:  cpu time      0.0729: real time      0.0730
-       DOS:  cpu time      0.0002: real time      0.0002
+     EDDAV:  cpu time      0.0579: real time      0.0581
+       DOS:  cpu time      0.0001: real time      0.0001
     --------------------------------------------
-      LOOP:  cpu time      0.0730: real time      0.0731
+      LOOP:  cpu time      0.0580: real time      0.0581
 
  eigenvalue-minimisations  :   800
  total energy-change (2. order) :-0.1018872E-02  (-0.1018872E-02)
@@ -831,12 +831,12 @@ Coulomb truncation method
 --------------------------------------- Iteration      1(   5)  ---------------------------------------
 
 
-     EDDAV:  cpu time      0.0536: real time      0.0538
+     EDDAV:  cpu time      0.0410: real time      0.0410
        DOS:  cpu time      0.0001: real time      0.0001
-    CHARGE:  cpu time      0.0057: real time      0.0057
+    CHARGE:  cpu time      0.0051: real time      0.0052
     MIXING:  cpu time      0.0007: real time      0.0007
     --------------------------------------------
-      LOOP:  cpu time      0.0600: real time      0.0602
+      LOOP:  cpu time      0.0468: real time      0.0469
 
  eigenvalue-minimisations  :   552
  total energy-change (2. order) :-0.5094277E-06  (-0.5097915E-06)
@@ -875,16 +875,16 @@ Coulomb truncation method
 --------------------------------------- Iteration      1(   6)  ---------------------------------------
 
 
-    POTLOK:  cpu time      0.0159: real time      0.0160
-    SETDIJ:  cpu time      0.0006: real time      0.0006
-    EDDIAG:  cpu time      0.0150: real time      0.0150
-  RMM-DIIS:  cpu time      0.0354: real time      0.0354
-    ORTHCH:  cpu time      0.0003: real time      0.0003
-       DOS:  cpu time      0.0002: real time      0.0002
-    CHARGE:  cpu time      0.0051: real time      0.0051
+    POTLOK:  cpu time      0.0133: real time      0.0134
+    SETDIJ:  cpu time      0.0013: real time      0.0013
+    EDDIAG:  cpu time      0.0146: real time      0.0166
+  RMM-DIIS:  cpu time      0.0313: real time      0.0313
+    ORTHCH:  cpu time      0.0002: real time      0.0002
+       DOS:  cpu time      0.0001: real time      0.0001
+    CHARGE:  cpu time      0.0046: real time      0.0046
     MIXING:  cpu time      0.0007: real time      0.0007
     --------------------------------------------
-      LOOP:  cpu time      0.0731: real time      0.0732
+      LOOP:  cpu time      0.0662: real time      0.0682
 
  eigenvalue-minimisations  :   465
  total energy-change (2. order) : 0.1255645E+00  (-0.4965355E-02)
@@ -927,16 +927,16 @@ Coulomb truncation method
 --------------------------------------- Iteration      1(   7)  ---------------------------------------
 
 
-    POTLOK:  cpu time      0.0141: real time      0.0142
-    SETDIJ:  cpu time      0.0011: real time      0.0011
-    EDDIAG:  cpu time      0.0128: real time      0.0128
-  RMM-DIIS:  cpu time      0.0364: real time      0.0364
-    ORTHCH:  cpu time      0.0003: real time      0.0003
+    POTLOK:  cpu time      0.0129: real time      0.0130
+    SETDIJ:  cpu time      0.0012: real time      0.0012
+    EDDIAG:  cpu time      0.0112: real time      0.0112
+  RMM-DIIS:  cpu time      0.0339: real time      0.0340
+    ORTHCH:  cpu time      0.0002: real time      0.0002
        DOS:  cpu time      0.0001: real time      0.0001
-    CHARGE:  cpu time      0.0048: real time      0.0048
+    CHARGE:  cpu time      0.0047: real time      0.0047
     MIXING:  cpu time      0.0007: real time      0.0007
     --------------------------------------------
-      LOOP:  cpu time      0.0703: real time      0.0704
+      LOOP:  cpu time      0.0650: real time      0.0651
 
  eigenvalue-minimisations  :   502
  total energy-change (2. order) : 0.5744300E-01  (-0.1149563E-01)
@@ -979,16 +979,16 @@ Coulomb truncation method
 --------------------------------------- Iteration      1(   8)  ---------------------------------------
 
 
-    POTLOK:  cpu time      0.0135: real time      0.0136
-    SETDIJ:  cpu time      0.0010: real time      0.0010
-    EDDIAG:  cpu time      0.0123: real time      0.0123
-  RMM-DIIS:  cpu time      0.0347: real time      0.0347
+    POTLOK:  cpu time      0.0132: real time      0.0133
+    SETDIJ:  cpu time      0.0007: real time      0.0007
+    EDDIAG:  cpu time      0.0112: real time      0.0112
+  RMM-DIIS:  cpu time      0.0331: real time      0.0331
     ORTHCH:  cpu time      0.0002: real time      0.0002
        DOS:  cpu time      0.0001: real time      0.0001
     CHARGE:  cpu time      0.0047: real time      0.0047
-    MIXING:  cpu time      0.0006: real time      0.0006
+    MIXING:  cpu time      0.0007: real time      0.0087
     --------------------------------------------
-      LOOP:  cpu time      0.0672: real time      0.0673
+      LOOP:  cpu time      0.0640: real time      0.0720
 
  eigenvalue-minimisations  :   486
  total energy-change (2. order) :-0.1652098E-02  (-0.7752321E-03)
@@ -1031,16 +1031,16 @@ Coulomb truncation method
 --------------------------------------- Iteration      1(   9)  ---------------------------------------
 
 
-    POTLOK:  cpu time      0.0136: real time      0.0137
-    SETDIJ:  cpu time      0.0005: real time      0.0005
-    EDDIAG:  cpu time      0.0119: real time      0.0119
-  RMM-DIIS:  cpu time      0.0355: real time      0.0355
+    POTLOK:  cpu time      0.0129: real time      0.0130
+    SETDIJ:  cpu time      0.0013: real time      0.0013
+    EDDIAG:  cpu time      0.0110: real time      0.0110
+  RMM-DIIS:  cpu time      0.0344: real time      0.0344
     ORTHCH:  cpu time      0.0002: real time      0.0002
        DOS:  cpu time      0.0001: real time      0.0001
     CHARGE:  cpu time      0.0047: real time      0.0047
-    MIXING:  cpu time      0.0006: real time      0.0006
+    MIXING:  cpu time      0.0007: real time      0.0007
     --------------------------------------------
-      LOOP:  cpu time      0.0671: real time      0.0672
+      LOOP:  cpu time      0.0653: real time      0.0654
 
  eigenvalue-minimisations  :   521
  total energy-change (2. order) :-0.2216000E-03  (-0.1546102E-03)
@@ -1083,16 +1083,16 @@ Coulomb truncation method
 --------------------------------------- Iteration      1(  10)  ---------------------------------------
 
 
-    POTLOK:  cpu time      0.0135: real time      0.0136
-    SETDIJ:  cpu time      0.0005: real time      0.0005
-    EDDIAG:  cpu time      0.0118: real time      0.0118
-  RMM-DIIS:  cpu time      0.0350: real time      0.0350
+    POTLOK:  cpu time      0.0129: real time      0.0130
+    SETDIJ:  cpu time      0.0011: real time      0.0011
+    EDDIAG:  cpu time      0.0111: real time      0.0111
+  RMM-DIIS:  cpu time      0.0334: real time      0.0334
     ORTHCH:  cpu time      0.0002: real time      0.0002
        DOS:  cpu time      0.0001: real time      0.0001
-    CHARGE:  cpu time      0.0047: real time      0.0047
-    MIXING:  cpu time      0.0006: real time      0.0006
+    CHARGE:  cpu time      0.0046: real time      0.0046
+    MIXING:  cpu time      0.0007: real time      0.0007
     --------------------------------------------
-      LOOP:  cpu time      0.0664: real time      0.0665
+      LOOP:  cpu time      0.0641: real time      0.0643
 
  eigenvalue-minimisations  :   508
  total energy-change (2. order) :-0.5777854E-04  (-0.2782544E-04)
@@ -1135,16 +1135,16 @@ Coulomb truncation method
 --------------------------------------- Iteration      1(  11)  ---------------------------------------
 
 
-    POTLOK:  cpu time      0.0135: real time      0.0136
-    SETDIJ:  cpu time      0.0005: real time      0.0005
-    EDDIAG:  cpu time      0.0117: real time      0.0117
-  RMM-DIIS:  cpu time      0.0357: real time      0.0357
+    POTLOK:  cpu time      0.0132: real time      0.0132
+    SETDIJ:  cpu time      0.0011: real time      0.0011
+    EDDIAG:  cpu time      0.0110: real time      0.0110
+  RMM-DIIS:  cpu time      0.0347: real time      0.0347
     ORTHCH:  cpu time      0.0002: real time      0.0002
        DOS:  cpu time      0.0001: real time      0.0001
-    CHARGE:  cpu time      0.0048: real time      0.0048
+    CHARGE:  cpu time      0.0047: real time      0.0047
     MIXING:  cpu time      0.0007: real time      0.0007
     --------------------------------------------
-      LOOP:  cpu time      0.0672: real time      0.0673
+      LOOP:  cpu time      0.0656: real time      0.0658
 
  eigenvalue-minimisations  :   522
  total energy-change (2. order) :-0.1368482E-04  (-0.7860915E-05)
@@ -1187,16 +1187,16 @@ Coulomb truncation method
 --------------------------------------- Iteration      1(  12)  ---------------------------------------
 
 
-    POTLOK:  cpu time      0.0135: real time      0.0136
-    SETDIJ:  cpu time      0.0005: real time      0.0005
-    EDDIAG:  cpu time      0.0119: real time      0.0119
-  RMM-DIIS:  cpu time      0.0354: real time      0.0354
-    ORTHCH:  cpu time      0.0002: real time      0.0002
+    POTLOK:  cpu time      0.0132: real time      0.0133
+    SETDIJ:  cpu time      0.0008: real time      0.0008
+    EDDIAG:  cpu time      0.0110: real time      0.0110
+  RMM-DIIS:  cpu time      0.0355: real time      0.0355
+    ORTHCH:  cpu time      0.0003: real time      0.0003
        DOS:  cpu time      0.0001: real time      0.0001
     CHARGE:  cpu time      0.0047: real time      0.0047
     MIXING:  cpu time      0.0007: real time      0.0007
     --------------------------------------------
-      LOOP:  cpu time      0.0671: real time      0.0672
+      LOOP:  cpu time      0.0663: real time      0.0664
 
  eigenvalue-minimisations  :   532
  total energy-change (2. order) :-0.1361628E-05  (-0.1170468E-05)
@@ -1239,16 +1239,16 @@ Coulomb truncation method
 --------------------------------------- Iteration      1(  13)  ---------------------------------------
 
 
-    POTLOK:  cpu time      0.0134: real time      0.0135
-    SETDIJ:  cpu time      0.0007: real time      0.0007
-    EDDIAG:  cpu time      0.0117: real time      0.0117
-  RMM-DIIS:  cpu time      0.0306: real time      0.0306
+    POTLOK:  cpu time      0.0132: real time      0.0132
+    SETDIJ:  cpu time      0.0011: real time      0.0011
+    EDDIAG:  cpu time      0.0111: real time      0.0111
+  RMM-DIIS:  cpu time      0.0292: real time      0.0293
     ORTHCH:  cpu time      0.0002: real time      0.0002
        DOS:  cpu time      0.0001: real time      0.0001
-    CHARGE:  cpu time      0.0048: real time      0.0048
-    MIXING:  cpu time      0.0007: real time      0.0007
+    CHARGE:  cpu time      0.0046: real time      0.0046
+    MIXING:  cpu time      0.0008: real time      0.0008
     --------------------------------------------
-      LOOP:  cpu time      0.0622: real time      0.0623
+      LOOP:  cpu time      0.0602: real time      0.0604
 
  eigenvalue-minimisations  :   435
  total energy-change (2. order) : 0.1414077E-05  (-0.3656647E-06)
@@ -1291,14 +1291,14 @@ Coulomb truncation method
 --------------------------------------- Iteration      1(  14)  ---------------------------------------
 
 
-    POTLOK:  cpu time      0.0133: real time      0.0134
-    SETDIJ:  cpu time      0.0009: real time      0.0009
-    EDDIAG:  cpu time      0.0117: real time      0.0117
-  RMM-DIIS:  cpu time      0.0223: real time      0.0223
+    POTLOK:  cpu time      0.0129: real time      0.0129
+    SETDIJ:  cpu time      0.0012: real time      0.0012
+    EDDIAG:  cpu time      0.0110: real time      0.0110
+  RMM-DIIS:  cpu time      0.0217: real time      0.0218
     ORTHCH:  cpu time      0.0002: real time      0.0002
        DOS:  cpu time      0.0001: real time      0.0001
     --------------------------------------------
-      LOOP:  cpu time      0.0486: real time      0.0487
+      LOOP:  cpu time      0.0471: real time      0.0473
 
  eigenvalue-minimisations  :   299
  total energy-change (2. order) :-0.2388156E-06  (-0.7024488E-07)
@@ -1693,13 +1693,13 @@ Coulomb truncation method
 ------------------------ aborting loop because EDIFF is reached ----------------------------------------
 
 
-    CHARGE:  cpu time      0.0048: real time      0.0048
+    CHARGE:  cpu time      0.0045: real time      0.0045
     FORLOC:  cpu time      0.0005: real time      0.0005
-    FORNL :  cpu time      0.0028: real time      0.0028
-    STRESS:  cpu time      0.0137: real time      0.0137
-    FORCOR:  cpu time      0.0134: real time      0.0134
-    FORHAR:  cpu time      0.0021: real time      0.0021
-    MIXING:  cpu time      0.0007: real time      0.0007
+    FORNL :  cpu time      0.0026: real time      0.0026
+    STRESS:  cpu time      0.0133: real time      0.0133
+    FORCOR:  cpu time      0.0136: real time      0.0137
+    FORHAR:  cpu time      0.0022: real time      0.0022
+    MIXING:  cpu time      0.0006: real time      0.0006
     OFIELD:  cpu time      0.0000: real time      0.0000
 
   FORCE on cell =-STRESS in cart. coord.  units (eV):
@@ -1772,7 +1772,7 @@ Coulomb truncation method
 
 
  writing wavefunctions
-     LOOP+:  cpu time      1.0948: real time      1.0968
+     LOOP+:  cpu time      0.9445: real time      0.9640
     4ORBIT:  cpu time      0.0000: real time      0.0000
 
  total amount of memory used by VASP MPI-rank0    35139. kBytes
@@ -1790,14 +1790,14 @@ Coulomb truncation method
  General timing and accounting informations for this job:
  ========================================================
   
-                  Total CPU time used (sec):        1.617
-                            User time (sec):        1.276
-                          System time (sec):        0.340
-                         Elapsed time (sec):        2.089
+                  Total CPU time used (sec):        1.304
+                            User time (sec):        1.031
+                          System time (sec):        0.273
+                         Elapsed time (sec):        1.865
   
-                   Maximum memory used (kb):      148748.
+                   Maximum memory used (kb):      154252.
                    Average memory used (kb):          N/A
   
-                          Minor page faults:        22244
-                          Major page faults:            2
-                 Voluntary context switches:         1136
+                          Minor page faults:        22054
+                          Major page faults:           17
+                 Voluntary context switches:         1164

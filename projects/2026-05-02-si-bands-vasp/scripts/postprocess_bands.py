@@ -1,9 +1,18 @@
 #!/usr/bin/env python3
-"""Analyze VASP Si band output, write band_analysis.json, summary.md, and bands.png."""
+"""Analyze VASP Si band output, write band_analysis.json, summary.md, and bands.png.
+
+Reads from canonical subdir layout:
+  inputs/KPOINTS_band, inputs/POTCAR
+  scf/OUTCAR
+  bands/EIGENVAL, bands/OUTCAR, bands/vasprun.xml
+  logs/stage_times.tsv
+Writes:
+  analysis/band_analysis.json, analysis/bands.png
+  ../summary.md (project root)
+"""
 from __future__ import annotations
 
 import json
-import math
 import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -15,7 +24,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-PROJECT = Path(__file__).resolve().parent
+SCRIPTS = Path(__file__).resolve().parent
+PROJECT = SCRIPTS.parent
+INPUTS = PROJECT / "inputs"
+SCF = PROJECT / "scf"
+BANDS = PROJECT / "bands"
+ANALYSIS = PROJECT / "analysis"
+LOGS = PROJECT / "logs"
+ANALYSIS.mkdir(exist_ok=True)
+
 NELECT = 8
 OCC_BANDS = NELECT // 2
 QE_GAP_EV = 0.575
@@ -31,7 +48,7 @@ K_LABELS = [
 
 
 def read_kpoints_band() -> tuple[list[np.ndarray], list[str], int]:
-    text = (PROJECT / "KPOINTS_band").read_text().splitlines()
+    text = (INPUTS / "KPOINTS_band").read_text().splitlines()
     points_per_segment = int(text[1].strip())
     raw: list[np.ndarray] = []
     labels: list[str] = []
@@ -77,7 +94,7 @@ def segment_position(k_index: int, points_per_segment: int) -> dict[str, object]
 
 
 def parse_eigenval() -> tuple[np.ndarray, np.ndarray, int, int, int]:
-    lines = (PROJECT / "EIGENVAL").read_text(errors="ignore").splitlines()
+    lines = (BANDS / "EIGENVAL").read_text(errors="ignore").splitlines()
     nelect, nkpts, nbands = [int(float(v)) for v in lines[5].split()[:3]]
     kpoints: list[list[float]] = []
     bands: list[list[float]] = []
@@ -98,7 +115,7 @@ def parse_eigenval() -> tuple[np.ndarray, np.ndarray, int, int, int]:
 
 
 def parse_scf_iterations() -> int | None:
-    outcar = PROJECT / "OUTCAR_scf"
+    outcar = SCF / "OUTCAR"
     if not outcar.exists():
         return None
     matches = re.findall(
@@ -117,12 +134,12 @@ def parse_elapsed(path: Path) -> float | None:
 
 
 def parse_enmax() -> float | None:
-    match = re.search(r"ENMAX\s*=\s*([\d.]+)", (PROJECT / "POTCAR").read_text(errors="ignore"))
+    match = re.search(r"ENMAX\s*=\s*([\d.]+)", (INPUTS / "POTCAR").read_text(errors="ignore"))
     return float(match.group(1)) if match else None
 
 
 def parse_stage_times() -> dict[str, dict[str, float | int]]:
-    path = PROJECT / "stage_times.tsv"
+    path = LOGS / "stage_times.tsv"
     stages: dict[str, dict[str, float | int]] = {}
     if not path.exists():
         return stages
@@ -142,7 +159,7 @@ def parse_stage_times() -> dict[str, dict[str, float | int]]:
 
 
 def maybe_parse_vasprun_band() -> dict[str, object]:
-    path = PROJECT / "vasprun_band.xml"
+    path = BANDS / "vasprun.xml"
     if not path.exists():
         return {"available": False}
     try:
@@ -157,14 +174,14 @@ def maybe_parse_vasprun_band() -> dict[str, object]:
 
 
 def maybe_pymatgen_bsvasprun() -> dict[str, object]:
-    path = PROJECT / "vasprun_band.xml"
+    path = BANDS / "vasprun.xml"
     if not path.exists():
-        return {"available": False, "reason": "vasprun_band.xml not present"}
+        return {"available": False, "reason": "bands/vasprun.xml not present"}
     try:
         from pymatgen.io.vasp.outputs import BSVasprun
 
         vr = BSVasprun(str(path), parse_projected_eigen=False)
-        bs = vr.get_band_structure(kpoints_filename=str(PROJECT / "KPOINTS_band"), line_mode=True)
+        bs = vr.get_band_structure(kpoints_filename=str(INPUTS / "KPOINTS_band"), line_mode=True)
         gap = bs.get_band_gap()
         vbm = bs.get_vbm()
         cbm = bs.get_cbm()
@@ -220,7 +237,7 @@ def write_plot(
     ax.set_title(f"Si diamond PBE VASP band structure, indirect gap = {gap:.3f} eV")
     ax.legend(frameon=False, loc="upper right")
     fig.tight_layout()
-    fig.savefig(PROJECT / "bands.png")
+    fig.savefig(ANALYSIS / "bands.png")
     plt.close(fig)
 
 
@@ -230,9 +247,9 @@ def write_summary(analysis: dict[str, object]) -> None:
     status = "done" if analysis["success_criteria_met"] else "failed"
     summary = f"""
 - prompt: Compute the electronic band structure of bulk silicon diamond with PBE in VASP 6.6.0 along L-G-X-W-K-G and cross-validate against the QE baseline.
--procedures: Generated VASP inputs for SCF (`8x8x8` Gamma-centered, `ENCUT=400 eV`, `EDIFF=1e-6`, `ISMEAR=0`, `SIGMA=0.05`, `LCHARG=.TRUE.`, `KPAR=2`, `NCORE=4`) and non-SCF band calculation (`ICHARG=11`, `NBANDS=24`, 36 points/segment line-mode `L-G-X-W-K-G` path). Ran the single-node SLURM chain with `oneapi/2024.2.0`, `vasp/6.6.0-oneapi.2024.2.0`, `--nodes=1 --ntasks=1 --cpus-per-task=8`, and Intel MPI `mpirun -np "${{SLURM_CPUS_PER_TASK}}"`.
-- generated data: `OUTCAR_scf`, `OUTCAR_band`, `vasprun_scf.xml`, `vasprun_band.xml`, `EIGENVAL`, `band_analysis.json`, `stage_times.tsv`, `module_list.txt`; SCF electronic iterations = {analysis["scf_iter"]}, indirect gap = {analysis["indirect_gap_ev"]:.6f} eV.
-- generated figure: `bands.png`
+-procedures: Generated VASP inputs in inputs/ for SCF (`8x8x8` Gamma-centered, `ENCUT=400 eV`, `EDIFF=1e-6`, `ISMEAR=0`, `SIGMA=0.05`, `LCHARG=.TRUE.`, `KPAR=2`, `NCORE=4`) and non-SCF band calculation (`ICHARG=11`, `NBANDS=24`, 36 points/segment line-mode `L-G-X-W-K-G` path). Stages run in scf/ and bands/ subdirs with symlinked inputs. Single-node SLURM chain with `oneapi/2024.2.0`, `vasp/6.6.0-oneapi.2024.2.0`, `--nodes=1 --ntasks=8 --cpus-per-task=1`, and Intel MPI `mpirun -np "${{SLURM_NTASKS}}"`.
+- generated data: `scf/OUTCAR`, `bands/OUTCAR`, `scf/vasprun.xml`, `bands/vasprun.xml`, `bands/EIGENVAL`, `analysis/band_analysis.json`, `logs/stage_times.tsv`, `analysis/module_list.txt`; SCF electronic iterations = {analysis["scf_iter"]}, indirect gap = {analysis["indirect_gap_ev"]:.6f} eV.
+- generated figure: `analysis/bands.png`
 - key result: VBM at {vbm["expected_location"] if vbm["is_gamma"] else vbm["path_location"]["segment"]}; CBM on {cbm["path_location"]["segment"]} at fraction {cbm["path_location"]["fraction"]:.6f}; QE reference gap = {QE_GAP_EV:.3f} eV, VASP-QE gap delta = {analysis["gap_delta_vs_qe_ev"]:.6f} eV.
 - status: {status}
 """.strip()
@@ -311,20 +328,20 @@ def main() -> None:
         "scf_converged_within_30": scf_iter is not None and scf_iter <= 30,
         "walltime_sec": {
             "stage_times": parse_stage_times(),
-            "scf_outcar_elapsed": parse_elapsed(PROJECT / "OUTCAR_scf"),
-            "band_outcar_elapsed": parse_elapsed(PROJECT / "OUTCAR_band"),
+            "scf_outcar_elapsed": parse_elapsed(SCF / "OUTCAR"),
+            "band_outcar_elapsed": parse_elapsed(BANDS / "OUTCAR"),
         },
         "encut_ev": 400.0,
         "potcar_enmax_ev": enmax,
         "encut_over_enmax": 400.0 / enmax if enmax else None,
-        "plot": "bands.png",
+        "plot": "analysis/bands.png",
     }
     analysis["success_criteria_met"] = bool(
         analysis["gap_in_acceptance_window"]
         and analysis["qualitative_topology_matches_qe"]
         and analysis["scf_converged_within_30"]
     )
-    (PROJECT / "band_analysis.json").write_text(json.dumps(analysis, indent=2) + "\n")
+    (ANALYSIS / "band_analysis.json").write_text(json.dumps(analysis, indent=2) + "\n")
     write_summary(analysis)
     print(json.dumps(analysis, indent=2))
     if not analysis["success_criteria_met"]:

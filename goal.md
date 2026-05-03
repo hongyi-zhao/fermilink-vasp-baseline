@@ -60,15 +60,29 @@ for the empirical evidence and the cascade-fix postmortem):
    NEVER ${BASH_SOURCE[0]} or $0 (those point to /var/spool/slurmd
    under sbatch). Validated by direct test (job 26536 cascade).
 
-2. SLURM resource layout for VASP (pure MPI, no OpenMP in default
-   oneapi build) — STRONGLY PREFER:
-       #SBATCH --nodes=1
-       #SBATCH --ntasks=N            ← MPI ranks (e.g. 8)
-       #SBATCH --cpus-per-task=1     ← VASP default has no OpenMP
-       mpirun -np "${SLURM_NTASKS}" vasp_std
-   The alternative `--ntasks=1 --cpus-per-task=N` requires Open MPI
-   `--oversubscribe` to bypass slot detection (job 26537 cascade).
-   Default to `--ntasks=N --cpus-per-task=1`.
+2. SLURM resource layout for VASP — EMPIRICALLY VALIDATED on this site:
+
+   USE:  #SBATCH --nodes=1
+         #SBATCH --ntasks=1
+         #SBATCH --cpus-per-task=N         ← VASP MPI rank count
+         mpirun -np "${SLURM_CPUS_PER_TASK}" vasp_std
+
+   Validated by jobs 26534, 26542, 26547, 26549 — all completed in
+   ~13-18s with bit-exact reproducible gap (0.572568 eV).
+
+   DO NOT USE: --ntasks=N --cpus-per-task=1
+
+   Tested empirically (job 26548, 2026-05-03): all 8 vasp_std MPI
+   ranks were pinned to a single CPU core (CPU 0) by SLURM cgroup
+   + Intel MPI Hydra srun bstrap_proxy interaction. Each rank got
+   ~12% CPU; runtime ballooned ~100x. Confirmed by:
+       taskset -pc <vasp_std_pid>  →  affinity={0}  for all 8 ranks
+   Job killed after 10+ min when normal run is 13s.
+
+   The textbook --ntasks=N --cpus-per-task=1 is the atomate2/community
+   default, but DOES NOT WORK on this site due to local SLURM
+   TaskPlugin configuration. Trust empirical site testing over
+   textbook recommendations.
 
 3. Module load in main shell, NOT in subshells —
    `module load X` inside `( ... )` works (subshell isolation is
