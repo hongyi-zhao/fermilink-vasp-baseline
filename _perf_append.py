@@ -2,6 +2,8 @@
 """Append a VASP perf record to ~/fermilink/vasp-demo/perf_log.jsonl.
 
 Reads OUTCAR for SCF metrics + INCAR for keywords (KPAR/NCORE/ENCUT).
+Use PERF_OUTCAR_PATH, PERF_INCAR_PATH, and PERF_STAGES_PATH to route
+canonical subdirectory artifacts without root-level compatibility links.
 Reads stage_times.tsv (if present) for per-stage real wall times.
 """
 import json, os, re, datetime, sys
@@ -9,28 +11,38 @@ from pathlib import Path
 
 cwd = Path.cwd()
 
+def resolve_configured_path(env_name, default_name=None, *, fallback_glob=None, required=False):
+    env_value = os.environ.get(env_name, "").strip()
+    if env_value:
+        path = cwd / env_value
+        if not path.exists():
+            print(f"[perf] {env_name}={env_value} but file not found in {cwd}", file=sys.stderr)
+            sys.exit(0)
+        return path
+    if default_name is not None:
+        path = cwd / default_name
+        if path.exists():
+            return path
+    if fallback_glob:
+        cands = sorted(cwd.glob(fallback_glob), key=lambda p: p.stat().st_mtime, reverse=True)
+        if cands:
+            return cands[0]
+    if required:
+        label = default_name or env_name
+        print(f"[perf] no {label} found", file=sys.stderr)
+        sys.exit(0)
+    return None
+
 # ---- find OUTCAR ----
 # Priority: PERF_OUTCAR_PATH env var (per goal.md SITE FACTS rule 5)
 #   > cwd/OUTCAR (default)
 #   > most recent OUTCAR* by mtime (fallback)
-_perf_outcar_env = os.environ.get("PERF_OUTCAR_PATH", "").strip()
-if _perf_outcar_env:
-    outcar = cwd / _perf_outcar_env
-    if not outcar.exists():
-        print(f"[perf] PERF_OUTCAR_PATH={_perf_outcar_env} but file not found in {cwd}", file=sys.stderr)
-        sys.exit(0)
-else:
-    outcar = cwd / "OUTCAR"
-    if not outcar.exists():
-        cands = sorted(cwd.glob("OUTCAR*"), key=lambda p: p.stat().st_mtime, reverse=True)
-        if not cands:
-            print("[perf] no OUTCAR found", file=sys.stderr); sys.exit(0)
-        outcar = cands[0]
+outcar = resolve_configured_path("PERF_OUTCAR_PATH", "OUTCAR", fallback_glob="OUTCAR*", required=True)
 otxt = outcar.read_text(errors="ignore")
 
 # ---- read INCAR for parallelization keys ----
-incar = cwd / "INCAR"
-itxt = incar.read_text(errors="ignore") if incar.exists() else ""
+incar = resolve_configured_path("PERF_INCAR_PATH", "INCAR")
+itxt = incar.read_text(errors="ignore") if incar else ""
 
 def grep(text, pat, default=None, cast=str):
     m = re.search(pat, text)
@@ -57,8 +69,8 @@ ncore = grep_incar("NCORE", 1, int)
 
 # ---- stage_times.tsv ----
 stage_real = {}
-stages_path = cwd / "stage_times.tsv"
-if stages_path.exists():
+stages_path = resolve_configured_path("PERF_STAGES_PATH", "stage_times.tsv")
+if stages_path and stages_path.exists():
     for line in stages_path.read_text().strip().splitlines():
         parts = line.split("\t")
         if len(parts) >= 4:
@@ -89,9 +101,13 @@ rec = {
     "stages":             stage_real or None,
     "total_pipeline_sec": total_pipeline_sec,
     "ts":                 datetime.datetime.now().isoformat(timespec="seconds"),
-    "outcar":             str(outcar.relative_to(cwd)),
+    "outcar":             None,
     "project":            cwd.name,
 }
+try:
+    rec["outcar"] = str(outcar.relative_to(cwd))
+except ValueError:
+    rec["outcar"] = str(outcar)
 
 log = Path.home() / "fermilink/vasp-demo/perf_log.jsonl"
 log.parent.mkdir(parents=True, exist_ok=True)

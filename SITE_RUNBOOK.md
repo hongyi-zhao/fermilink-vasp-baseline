@@ -2,7 +2,7 @@
 
 **Workspace**: `~/fermilink/vasp-demo`, `~/fermilink/qe-demo`  
 **Site**: `x13dai-t` (96 CPU, 515 GiB, SLURM partition=batch)  
-**Status**: Production-ready for research tasks (2026-05-03)
+**Status**: Production-ready for research tasks; no-facade perf routing validated (2026-05-05)
 
 ---
 
@@ -15,10 +15,11 @@
 | VASP 6.6 | PAW.64 PBE | 12 | 26542 | 0.572568 | -2.4 meV |
 | VASP 6.6 | PAW.64 PBE | 24 | 26547 | 0.572568 | -2.4 meV |
 | VASP 6.6 | PAW.64 PBE | 24 | 26549 | 0.572568 | -2.4 meV |
+| VASP 6.6 | PAW.64 PBE | 12 | 26551 | 0.572568 | -2.4 meV |
 
 **结论**: 
 - 跨 code Δ = 2.4 meV (textbook USPP vs PAW agreement)
-- 跨 4 次 VASP run Δ = **0.0 meV** (bit-exact reproducibility)
+- 跨多次 VASP run Δ = **0.0 meV** (bit-exact reproducibility)
 - VBM 在 Γ, CBM 在 Γ→X 约 0.83 处 — 跟 Si textbook 完全一致
 
 ---
@@ -101,11 +102,15 @@ NBANDS 翻倍 (12→24) 不影响 gap (0.0 meV diff)，只影响 plot 高能段�
 ```
 当 project 含 OUTCAR_scf 和 OUTCAR_band 时:
   export PERF_OUTCAR_PATH=bands/OUTCAR    (or scf/OUTCAR)
-  python3 _perf_append.py
-→ logger 会读你指定的 OUTCAR, 不依赖 mtime fallback (不可靠)
+  export PERF_INCAR_PATH=inputs/INCAR_band
+  export PERF_STAGES_PATH=logs/stage_times.tsv
+  python3 scripts/_perf_append.py
+→ logger 会读你指定的 OUTCAR/INCAR/stage_times.tsv, 不依赖 mtime fallback
+  或 root-level compatibility symlink.
 ```
 
-`_perf_append.py` (commit 32a120d) 已实现这个 env var override。
+`_perf_append.py` 已实现 OUTCAR/INCAR/stage timing 的 env var override:
+`PERF_OUTCAR_PATH`, `PERF_INCAR_PATH`, `PERF_STAGES_PATH`。
 
 ---
 
@@ -185,7 +190,7 @@ bands/POSCAR  → 跟 scf 一致
 ### 4.2 perf_log adaptive learning
 
 ```bash
-~/fermilink/vasp-demo/perf_log.jsonl    # 7 条记录, 跨 task
+~/fermilink/vasp-demo/perf_log.jsonl    # 跨 task 记录, 随 validation run 增长
 ~/fermilink/qe-demo/perf_log.jsonl
 ```
 
@@ -261,6 +266,8 @@ cd ..
 
 # === Perf logging (rule 5+6+7) ===
 export PERF_OUTCAR_PATH=bands/OUTCAR
+export PERF_INCAR_PATH=inputs/INCAR_band
+export PERF_STAGES_PATH=logs/stage_times.tsv
 "$PYTHON" scripts/_perf_append.py > logs/perf_append.log 2>&1
 ```
 
@@ -288,7 +295,7 @@ wannier90  irvsp  vasp2trace  continuation  hse  hybrid
 
 1. **改 AGENTS.md 做 site override** — fermilink completion checkpoint 会重置成 template. Site override 永远在 task `.md` 顶部 `## SITE FACTS` 段.
 
-2. **`cp OUTCAR_band OUTCAR` 给 logger 找路** — fragile, 用 `PERF_OUTCAR_PATH` env var.
+2. **root-level facade symlink / `cp OUTCAR_band OUTCAR` 给 logger 找路** — fragile, 用 `PERF_OUTCAR_PATH`, `PERF_INCAR_PATH`, `PERF_STAGES_PATH` env vars.
 
 3. **`mpirun --oversubscribe`** — 是 `--ntasks=8 -c=1` 的 workaround, 不是 fix. 这台机器不能用 `-ntasks=N`, 别走这条路.
 
@@ -415,7 +422,7 @@ sbatch scripts/run.sh
 
 ---
 
-## 12. Git 历史 (5 commits = 完整建立过程)
+## 12. Git 历史 (selected commits = 完整建立过程)
 
 ```
 c6c9e1b  site facts: empirically validate SLURM layout (rule 5 fix); reorganize project to canonical sub-dirs

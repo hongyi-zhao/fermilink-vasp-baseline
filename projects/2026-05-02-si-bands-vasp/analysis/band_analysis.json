@@ -74,11 +74,11 @@
         "exit": 0
       },
       "prepare": {
-        "elapsed_sec": 2.0,
+        "elapsed_sec": 3.0,
         "exit": 0
       },
       "scf": {
-        "elapsed_sec": 3.0,
+        "elapsed_sec": 2.0,
         "exit": 0
       },
       "band": {
@@ -86,8 +86,8 @@
         "exit": 0
       }
     },
-    "scf_outcar_elapsed": 2.499,
-    "band_outcar_elapsed": 6.211
+    "scf_outcar_elapsed": 2.191,
+    "band_outcar_elapsed": 6.082
   },
   "encut_ev": 400.0,
   "potcar_enmax_ev": 245.345,

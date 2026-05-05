@@ -5,3 +5,8 @@
 - key result: VBM at Gamma; CBM on G-X at fraction 0.828571; QE reference gap = 0.575 eV, VASP-QE gap delta = -0.002432 eV.
 - status: done
 cleanup_decision: kept WAVECAR
+- prompt: 2026-05-05 maintenance request to add `PERF_INCAR_PATH` and `PERF_STAGES_PATH`, stop using the root-level symlink facade for perf logging, delete the 20 project-root symlinks, update memory/runbook docs, validate with sbatch, and commit.
+-procedures: Patched `_perf_append.py` to route OUTCAR, INCAR, and stage timing through env vars; patched `scripts/run.sh` to export `PERF_OUTCAR_PATH=bands/OUTCAR`, `PERF_INCAR_PATH=inputs/INCAR_band`, and `PERF_STAGES_PATH=logs/stage_times.tsv`; deleted the root-level symlink facade while keeping canonical subdirectory/stage symlinks.
+- generated data: job `26551` completed with `sacct` state `COMPLETED 0:0`; refreshed `scf/OUTCAR`, `bands/OUTCAR`, `analysis/band_analysis.json`, and appended `perf_log.jsonl` with `nbands=12`, `kpar=2`, `ncore=4`, non-null stages, and `outcar=bands/OUTCAR`; `find . -maxdepth 1 -type l` returned zero root-level symlinks.
+- generated figure: `analysis/bands.png`
+- status: done

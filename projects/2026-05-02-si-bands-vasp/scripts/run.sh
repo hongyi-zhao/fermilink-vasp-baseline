@@ -56,30 +56,6 @@ load_modules() {
     "$MPI_RUN" --version > logs/mpirun.version 2>&1
 }
 
-refresh_root_links() {
-    ln -sfn inputs/INCAR_band INCAR
-    ln -sfn inputs/INCAR_scf INCAR_scf
-    ln -sfn inputs/INCAR_band INCAR_band
-    ln -sfn inputs/KPOINTS_scf KPOINTS_scf
-    ln -sfn inputs/KPOINTS_band KPOINTS_band
-    ln -sfn inputs/POSCAR POSCAR
-    ln -sfn inputs/POTCAR POTCAR
-    ln -sfn scf/OUTCAR OUTCAR_scf
-    ln -sfn bands/OUTCAR OUTCAR_band
-    ln -sfn scf/vasprun.xml vasprun_scf.xml
-    ln -sfn bands/vasprun.xml vasprun_band.xml
-    ln -sfn bands/EIGENVAL EIGENVAL
-    ln -sfn analysis/band_analysis.json band_analysis.json
-    ln -sfn analysis/bands.png bands.png
-    ln -sfn analysis/module_list.txt module_list.txt
-    ln -sfn logs/stage_times.tsv stage_times.tsv
-    ln -sfn scripts/generate_inputs.py generate_inputs.py
-    ln -sfn scripts/postprocess_bands.py postprocess_bands.py
-    ln -sfn scripts/run.sh run.sh
-    ln -sfn ../../../_perf_append.py scripts/_perf_append.py
-    ln -sfn ../../_perf_append.py _perf_append.py
-}
-
 prepare_inputs() {
     # Generate canonical inputs in inputs/
     "$PYTHON" scripts/generate_inputs.py
@@ -119,9 +95,10 @@ run_band() {
 
 postprocess() {
     "$PYTHON" scripts/postprocess_bands.py > logs/postprocess.log 2>&1
-    refresh_root_links
-    # Perf logger reads bands/OUTCAR explicitly via PERF_OUTCAR_PATH (SITE FACTS rule 5).
+    # Perf logger reads canonical subdirectory artifacts explicitly; no root-level facade links.
     export PERF_OUTCAR_PATH=bands/OUTCAR
+    export PERF_INCAR_PATH=inputs/INCAR_band
+    export PERF_STAGES_PATH=logs/stage_times.tsv
     "$PYTHON" scripts/_perf_append.py > logs/perf_append.log 2>&1
 }
 
