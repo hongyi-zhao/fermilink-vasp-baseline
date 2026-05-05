@@ -145,6 +145,7 @@ After this passes, next quest is FeTaSe2 HSE+SOC reproduction.
 - [x] Validate parsed band gap, VBM/CBM locations, SCF iterations, and plot artifact.
 - [x] Finalize `summary.md`, cleanup WAVECAR according to `goal.md`, and record perf/memory results.
 - [x] Verify deliverables are present and close the loop.
+- [x] Re-checked the current `python` interpreter in `/home/werner/fermilink/vasp-demo`.
 
 ### Progress log
 - initialized
@@ -156,6 +157,7 @@ After this passes, next quest is FeTaSe2 HSE+SOC reproduction.
 - 2026-05-02T09:29:33Z: Submitted job `26539`; SCF failed because module/path variables set inside a subshell stage were lost; patched `stage()` to preserve environment and added explicit command-failure returns.
 - 2026-05-02T09:36:52Z: Completed job `26540` but the result missed physics targets (`gap=0.2517 eV`, VBM off-Gamma) because the band run used default `NBANDS=8` and the lightweight postprocess path was inadequate; regenerated inputs with `NBANDS=12`, direct `EIGENVAL` analysis, and submitted corrected job `26541`.
 - 2026-05-02T09:43:44Z: Job `26541` met physics acceptance (`gap=0.572568 eV`, VBM at Gamma, CBM at 0.828571 along G-X); reran once as `26542` with `LWAVE=True` to keep a non-empty `WAVECAR`, refreshed `band_analysis.json`, appended perf logging, and finalized `summary.md`.
+- 2026-05-05T08:28:18Z: Re-checked `python` in `cwd=/home/werner/fermilink/vasp-demo`; `bash -ic 'which python'` resolved to `/home/werner/.pyenv/versions/datasci/bin/python`. Touched `projects/memory.md`.
 
 ## Long-Term Memory (Persistent)
 
