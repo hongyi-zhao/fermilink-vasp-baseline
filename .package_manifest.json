@@ -6,167 +6,77 @@
   "linked_entries": [
     {
       "mode": "symlink",
-      "name": "AUTHORS",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/AUTHORS"
-    },
-    {
-      "mode": "symlink",
-      "name": "COPYRIGHT",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/COPYRIGHT"
-    },
-    {
-      "mode": "symlink",
-      "name": "LICENSE",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/LICENSE"
-    },
-    {
-      "mode": "symlink",
-      "name": "Makefile.am",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/Makefile.am"
-    },
-    {
-      "mode": "symlink",
-      "name": "NEWS.md",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/NEWS.md"
-    },
-    {
-      "mode": "symlink",
       "name": "README.md",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/README.md"
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/README.md"
     },
     {
       "mode": "symlink",
-      "name": "TODO",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/TODO"
+      "name": "README_ELPHON.md",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/README_ELPHON.md"
     },
     {
       "mode": "symlink",
-      "name": "add_type_hints.xonsh",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/add_type_hints.xonsh"
+      "name": "arch",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/arch"
     },
     {
       "mode": "symlink",
-      "name": "autogen.sh",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/autogen.sh"
+      "name": "bin",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/bin"
     },
     {
       "mode": "symlink",
-      "name": "codecov.yml",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/codecov.yml"
+      "name": "build",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/build"
     },
     {
       "mode": "symlink",
-      "name": "codemeta.json",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/codemeta.json"
+      "name": "makefile",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/makefile"
     },
     {
       "mode": "symlink",
-      "name": "configure.ac",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/configure.ac"
-    },
-    {
-      "mode": "symlink",
-      "name": "contrib",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/contrib"
-    },
-    {
-      "mode": "symlink",
-      "name": "doc",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/doc"
-    },
-    {
-      "mode": "symlink",
-      "name": "index.md",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/index.md"
-    },
-    {
-      "mode": "symlink",
-      "name": "libpympb",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/libpympb"
-    },
-    {
-      "mode": "symlink",
-      "name": "m4",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/m4"
-    },
-    {
-      "mode": "symlink",
-      "name": "meep-pkgconfig.in",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/meep-pkgconfig.in"
-    },
-    {
-      "mode": "symlink",
-      "name": "mkdocs.yml",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/mkdocs.yml"
-    },
-    {
-      "mode": "symlink",
-      "name": "monkeytype.sqlite3",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/monkeytype.sqlite3"
-    },
-    {
-      "mode": "symlink",
-      "name": "python",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/python"
-    },
-    {
-      "mode": "symlink",
-      "name": "scheme",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/scheme"
+      "name": "makefile.include",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/makefile.include"
     },
     {
       "mode": "symlink",
       "name": "skills",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/skills"
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/skills"
     },
     {
       "mode": "symlink",
       "name": "src",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/src"
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/src"
     },
     {
       "mode": "symlink",
-      "name": "tests",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/tests"
+      "name": "testsuite",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/testsuite"
     },
     {
       "mode": "symlink",
-      "name": "version.sh",
-      "source": "/home/werner/.fermilink/scientific_packages/packages/meep/version.sh"
+      "name": "tools",
+      "source": "/home/werner/.fermilink/scientific_packages/packages/vasp/tools"
     }
   ],
   "missing_dependency_packages": [],
   "missing_requested_entries": [],
-  "package_id": "meep",
-  "package_path": "/home/werner/.fermilink/scientific_packages/packages/meep",
+  "package_id": "vasp",
+  "package_path": "/home/werner/.fermilink/scientific_packages/packages/vasp",
   "requested_entries": [
-    "AUTHORS",
-    "COPYRIGHT",
-    "LICENSE",
-    "Makefile.am",
-    "NEWS.md",
     "README.md",
-    "TODO",
-    "add_type_hints.xonsh",
-    "autogen.sh",
-    "codecov.yml",
-    "codemeta.json",
-    "configure.ac",
-    "contrib",
-    "doc",
-    "index.md",
-    "libpympb",
-    "m4",
-    "meep-pkgconfig.in",
-    "mkdocs.yml",
-    "monkeytype.sqlite3",
-    "python",
-    "scheme",
+    "README_ELPHON.md",
+    "arch",
+    "bin",
+    "build",
+    "makefile",
+    "makefile.include",
     "skills",
     "src",
-    "tests",
-    "version.sh"
+    "testsuite",
+    "tools"
   ],
-  "updated_at": "2026-05-05T08:27:17.923446+00:00",
+  "updated_at": "2026-05-05T08:31:45.837863+00:00",
   "version": 1
 }

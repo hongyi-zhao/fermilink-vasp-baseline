@@ -65,7 +65,7 @@ def write_incar_files() -> None:
             "ISYM": 0,
             "LCHARG": False,
             "LORBIT": 11,
-            "NBANDS": 24,
+            "NBANDS": 12,
         }
     )
     Incar(scf).write_file(INPUTS / "INCAR_scf")

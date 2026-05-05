@@ -20,6 +20,7 @@ mkdir -p inputs scf bands analysis logs
 
 export FL_SYSTEM_TAG=Si_diamond_PBE_band_vasp
 export VASP_PP=~/Public/hpc/vasp/pot
+export OMP_NUM_THREADS=1
 PYTHON=/home/werner/.pyenv/versions/datasci/bin/python
 MPI_RUN=/opt/intel/oneapi/2024.2.0/mpi/2021.13/bin/mpirun
 VASP_STD=
@@ -44,6 +45,7 @@ stage() {
 
 load_modules() {
     set +u
+    module purge > logs/module_load.log 2>&1
     module load oneapi/2024.2.0 > logs/module_load.log 2>&1
     module load vasp/6.6.0-oneapi.2024.2.0 >> logs/module_load.log 2>&1
     set -u
@@ -52,6 +54,30 @@ load_modules() {
     printf "%s\n" "$VASP_STD" > logs/vasp_std.path
     printf "%s\n" "$MPI_RUN" > logs/mpirun.path
     "$MPI_RUN" --version > logs/mpirun.version 2>&1
+}
+
+refresh_root_links() {
+    ln -sfn inputs/INCAR_band INCAR
+    ln -sfn inputs/INCAR_scf INCAR_scf
+    ln -sfn inputs/INCAR_band INCAR_band
+    ln -sfn inputs/KPOINTS_scf KPOINTS_scf
+    ln -sfn inputs/KPOINTS_band KPOINTS_band
+    ln -sfn inputs/POSCAR POSCAR
+    ln -sfn inputs/POTCAR POTCAR
+    ln -sfn scf/OUTCAR OUTCAR_scf
+    ln -sfn bands/OUTCAR OUTCAR_band
+    ln -sfn scf/vasprun.xml vasprun_scf.xml
+    ln -sfn bands/vasprun.xml vasprun_band.xml
+    ln -sfn bands/EIGENVAL EIGENVAL
+    ln -sfn analysis/band_analysis.json band_analysis.json
+    ln -sfn analysis/bands.png bands.png
+    ln -sfn analysis/module_list.txt module_list.txt
+    ln -sfn logs/stage_times.tsv stage_times.tsv
+    ln -sfn scripts/generate_inputs.py generate_inputs.py
+    ln -sfn scripts/postprocess_bands.py postprocess_bands.py
+    ln -sfn scripts/run.sh run.sh
+    ln -sfn ../../../_perf_append.py scripts/_perf_append.py
+    ln -sfn ../../_perf_append.py _perf_append.py
 }
 
 prepare_inputs() {
@@ -93,6 +119,7 @@ run_band() {
 
 postprocess() {
     "$PYTHON" scripts/postprocess_bands.py > logs/postprocess.log 2>&1
+    refresh_root_links
     # Perf logger reads bands/OUTCAR explicitly via PERF_OUTCAR_PATH (SITE FACTS rule 5).
     export PERF_OUTCAR_PATH=bands/OUTCAR
     "$PYTHON" scripts/_perf_append.py > logs/perf_append.log 2>&1

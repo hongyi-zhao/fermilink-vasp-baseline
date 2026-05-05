@@ -36,6 +36,22 @@ ANALYSIS.mkdir(exist_ok=True)
 NELECT = 8
 OCC_BANDS = NELECT // 2
 QE_GAP_EV = 0.575
+GAP_WINDOW_EV = (0.570, 0.575)
+CLEANUP_TERMS = (
+    "nscf",
+    "bands",
+    "wannier",
+    "fat-band",
+    "projwfc",
+    "restart",
+    "kpoints_opt",
+    "wannier90",
+    "irvsp",
+    "vasp2trace",
+    "continuation",
+    "hse",
+    "hybrid",
+)
 
 K_LABELS = [
     ("L", np.array([0.5, 0.5, 0.5])),
@@ -241,24 +257,41 @@ def write_plot(
     plt.close(fig)
 
 
+def cleanup_wavecar() -> str:
+    goal = PROJECT.parent.parent / "goal.md"
+    text = goal.read_text(errors="ignore").lower() if goal.exists() else ""
+    keep = any(term in text for term in CLEANUP_TERMS)
+    wavecars = [SCF / "WAVECAR", BANDS / "WAVECAR", PROJECT / "WAVECAR"]
+    if keep:
+        return "kept WAVECAR"
+    for path in wavecars:
+        try:
+            path.unlink()
+        except FileNotFoundError:
+            pass
+    return "pruned WAVECAR"
+
+
 def write_summary(analysis: dict[str, object]) -> None:
     vbm = analysis["vbm"]
     cbm = analysis["cbm"]
     status = "done" if analysis["success_criteria_met"] else "failed"
+    cleanup_decision = cleanup_wavecar()
     summary = f"""
 - prompt: Compute the electronic band structure of bulk silicon diamond with PBE in VASP 6.6.0 along L-G-X-W-K-G and cross-validate against the QE baseline.
--procedures: Generated VASP inputs in inputs/ for SCF (`8x8x8` Gamma-centered, `ENCUT=400 eV`, `EDIFF=1e-6`, `ISMEAR=0`, `SIGMA=0.05`, `LCHARG=.TRUE.`, `KPAR=2`, `NCORE=4`) and non-SCF band calculation (`ICHARG=11`, `NBANDS=24`, 36 points/segment line-mode `L-G-X-W-K-G` path). Stages run in scf/ and bands/ subdirs with symlinked inputs. Single-node SLURM chain with `oneapi/2024.2.0`, `vasp/6.6.0-oneapi.2024.2.0`, `--nodes=1 --ntasks=8 --cpus-per-task=1`, and Intel MPI `mpirun -np "${{SLURM_NTASKS}}"`.
+-procedures: Generated VASP inputs in inputs/ for SCF (`8x8x8` Gamma-centered, `ENCUT=400 eV`, `EDIFF=1e-6`, `ISMEAR=0`, `SIGMA=0.05`, `LCHARG=.TRUE.`, `KPAR=2`, `NCORE=4`) and non-SCF band calculation (`ICHARG=11`, `NBANDS=12`, 36 points/segment line-mode `L-G-X-W-K-G` path). Stages run in scf/ and bands/ subdirs with symlinked inputs. Single-node SLURM chain with `oneapi/2024.2.0`, `vasp/6.6.0-oneapi.2024.2.0`, `--nodes=1 --ntasks=1 --cpus-per-task=8`, and Intel MPI `mpirun -np "${{SLURM_CPUS_PER_TASK}}"`.
 - generated data: `scf/OUTCAR`, `bands/OUTCAR`, `scf/vasprun.xml`, `bands/vasprun.xml`, `bands/EIGENVAL`, `analysis/band_analysis.json`, `logs/stage_times.tsv`, `analysis/module_list.txt`; SCF electronic iterations = {analysis["scf_iter"]}, indirect gap = {analysis["indirect_gap_ev"]:.6f} eV.
 - generated figure: `analysis/bands.png`
 - key result: VBM at {vbm["expected_location"] if vbm["is_gamma"] else vbm["path_location"]["segment"]}; CBM on {cbm["path_location"]["segment"]} at fraction {cbm["path_location"]["fraction"]:.6f}; QE reference gap = {QE_GAP_EV:.3f} eV, VASP-QE gap delta = {analysis["gap_delta_vs_qe_ev"]:.6f} eV.
 - status: {status}
+cleanup_decision: {cleanup_decision}
 """.strip()
     if not analysis["success_criteria_met"]:
         summary += (
             f"\n-debugging clue: success criteria failed; gap_in_acceptance_window={analysis['gap_in_acceptance_window']}, "
             f"qualitative_topology_matches_qe={analysis['qualitative_topology_matches_qe']}, "
             f"scf_converged_within_30={analysis['scf_converged_within_30']}."
-            "\n-suggested skills updates: add an automatic convergence investigation branch when Si PBE gap falls outside 0.5-0.8 eV or differs from QE by more than 0.1 eV."
+            "\n-suggested skills updates: add an automatic convergence investigation branch when Si PBE gap falls outside 0.570-0.575 eV or differs from QE by more than 0.005 eV."
         )
     (PROJECT / "summary.md").write_text(summary + "\n")
 
@@ -286,7 +319,7 @@ def main() -> None:
     cbm_path = segment_position(cbm_idx, points_per_segment)
     vbm_path = segment_position(vbm_idx, points_per_segment)
     vbm_is_gamma = bool(np.linalg.norm(eigen_kpoints[vbm_idx]) < 1e-6)
-    gap_in_window = bool(0.5 <= gap <= 0.8)
+    gap_in_window = bool(GAP_WINDOW_EV[0] <= gap <= GAP_WINDOW_EV[1])
     topology_matches = bool(vbm_is_gamma and cbm_path["segment"] == "G-X" and 0.70 <= cbm_path["fraction"] <= 0.95)
 
     analysis = {
@@ -318,7 +351,7 @@ def main() -> None:
             "path_location": cbm_path,
         },
         "indirect_gap_ev": gap,
-        "acceptance_window_ev": [0.5, 0.8],
+        "acceptance_window_ev": list(GAP_WINDOW_EV),
         "gap_in_acceptance_window": gap_in_window,
         "qe_baseline_gap_ev": QE_GAP_EV,
         "gap_delta_vs_qe_ev": gap - QE_GAP_EV,

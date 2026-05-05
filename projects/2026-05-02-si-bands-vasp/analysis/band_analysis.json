@@ -18,7 +18,7 @@
     "cbm_kpoint_label": null
   },
   "n_kpoints": 180,
-  "n_bands": 24,
+  "n_bands": 12,
   "nelect": 8,
   "occupied_bands_assumed": 4,
   "points_per_segment": 36,
@@ -57,8 +57,8 @@
   },
   "indirect_gap_ev": 0.5725680000000004,
   "acceptance_window_ev": [
-    0.5,
-    0.8
+    0.57,
+    0.575
   ],
   "gap_in_acceptance_window": true,
   "qe_baseline_gap_ev": 0.575,
@@ -70,24 +70,24 @@
   "walltime_sec": {
     "stage_times": {
       "module": {
-        "elapsed_sec": 0.0,
+        "elapsed_sec": 1.0,
         "exit": 0
       },
       "prepare": {
-        "elapsed_sec": 3.0,
-        "exit": 0
-      },
-      "scf": {
         "elapsed_sec": 2.0,
         "exit": 0
       },
+      "scf": {
+        "elapsed_sec": 3.0,
+        "exit": 0
+      },
       "band": {
-        "elapsed_sec": 9.0,
+        "elapsed_sec": 7.0,
         "exit": 0
       }
     },
-    "scf_outcar_elapsed": 1.865,
-    "band_outcar_elapsed": 8.899
+    "scf_outcar_elapsed": 2.499,
+    "band_outcar_elapsed": 6.211
   },
   "encut_ev": 400.0,
   "potcar_enmax_ev": 245.345,
