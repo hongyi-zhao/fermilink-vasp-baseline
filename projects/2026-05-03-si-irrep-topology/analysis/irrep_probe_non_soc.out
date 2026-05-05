@@ -1,0 +1,1317 @@
+Warning: transformation to the convenctional unit cell will not be calculated, nor its validity checked (if given). See the description of flag -searchcell on:
+irrep --help
+Warning: -kpnames not specified. Only traces of symmetry operations will be calculated. Remember that -kpnames must be specified to identify irreps
+WARNING: --time-reversal set without providing magnetic moments via --magmom. Magnetic grey groups will be used. Results are still valid.
+Reading POSCAR: inputs/POSCAR
+Taking 3x3 identity matrix as refUC and shiftUC=(0,0,0). If you want to calculate the transformation to conventional cell, run IrRep with -searchcell
+
+
+ ---------- CRYSTAL STRUCTURE ---------- 
+
+
+Cell vectors in angstroms:
+
+      Vectors of DFT cell       |      Vectors of REF. cell      
+a0 =  0.0000   2.7150   2.7150  |  a0 =  0.0000   2.7150   2.7150
+a1 =  2.7150   0.0000   2.7150  |  a1 =  2.7150   0.0000   2.7150
+a2 =  2.7150   2.7150   0.0000  |  a2 =  2.7150   2.7150   0.0000
+
+Atomic positions in direct coordinates:
+
+Atom type |   Position in DFT cell    |   Position in REF cell   
+    1     |  0.0000   0.0000   0.0000 |  0.0000   0.0000   0.0000
+    1     |  0.2500   0.2500   0.2500 |  0.2500   0.2500   0.2500
+
+
+ ---------- SPACE GROUP ----------- 
+
+
+Space group: Fd-3m1' (# 227.129)
+Number of unitary symmetries: 48 (mod. lattice translations)
+Number of antiunitary symmetries: 48 (mod. lattice translations)
+
+The transformation from the DFT cell to the reference cell of tables is given by:
+        |   1.0000  0.0000  0.0000 |
+refUC = |   0.0000  1.0000  0.0000 |    shiftUC = [0. 0. 0.]
+        |   0.0000  0.0000  1.0000 |
+
+
+ ### 1 
+
+rotation : |  1   0   0 |
+           |  0   1   0 |
+           |  0   0   1 |
+
+
+ gk = [kx, ky, kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0.049369 -0.896888 -0.439493] ; angle =  0 , inversion: False, time reversal: False
+
+ ### 2 
+
+rotation : |  1   0   0 |
+           |  0   1   0 |
+           |  0   0   1 |
+
+
+ gk = [-kx, -ky, -kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0.049369 -0.896888 -0.439493] ; angle =  0 , inversion: False, time reversal: True
+
+ ### 3 
+
+rotation : |  1   1   1 |
+           |  0   0  -1 |
+           | -1   0   0 |
+
+
+ gk = [ky, ky-kz, -kx+ky]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0. -0.  1.] ; angle = 1/2 pi, inversion: False, time reversal: False
+
+ ### 4 
+
+rotation : |  1   1   1 |
+           |  0   0  -1 |
+           | -1   0   0 |
+
+
+ gk = [-ky, -ky+kz, kx-ky]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0. -0.  1.] ; angle = 1/2 pi, inversion: False, time reversal: True
+
+ ### 5 
+
+rotation : |  0   1   0 |
+           |  1   0   0 |
+           | -1  -1  -1 |
+
+
+ gk = [ky-kz, kx-kz, -kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [ 0.  0. -1.] ; angle = 1 pi, inversion: False, time reversal: False
+
+ ### 6 
+
+rotation : |  0   1   0 |
+           |  1   0   0 |
+           | -1  -1  -1 |
+
+
+ gk = [-ky+kz, -kx+kz, kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [ 0.  0. -1.] ; angle = 1 pi, inversion: False, time reversal: True
+
+ ### 7 
+
+rotation : |  0   0  -1 |
+           |  1   1   1 |
+           |  0  -1   0 |
+
+
+ gk = [kx-kz, kx, kx-ky]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [ 0. -0.  1.] ; angle = -1/2 pi, inversion: False, time reversal: False
+
+ ### 8 
+
+rotation : |  0   0  -1 |
+           |  1   1   1 |
+           |  0  -1   0 |
+
+
+ gk = [-kx+kz, -kx, -kx+ky]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [ 0. -0.  1.] ; angle = -1/2 pi, inversion: False, time reversal: True
+
+ ### 9 
+
+rotation : | -1  -1  -1 |
+           |  0   0   1 |
+           |  0   1   0 |
+
+
+ gk = [-kx, -kx+kz, -kx+ky]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [1. 0. 0.] ; angle = 1 pi, inversion: False, time reversal: False
+
+ ### 10 
+
+rotation : | -1  -1  -1 |
+           |  0   0   1 |
+           |  0   1   0 |
+
+
+ gk = [kx, kx-kz, kx-ky]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [1. 0. 0.] ; angle = 1 pi, inversion: False, time reversal: True
+
+ ### 11 
+
+rotation : |  0  -1   0 |
+           | -1   0   0 |
+           |  0   0  -1 |
+
+
+ gk = [-ky, -kx, -kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0.707107  0.707107  0.      ] ; angle = 1 pi, inversion: False, time reversal: False
+
+ ### 12 
+
+rotation : |  0  -1   0 |
+           | -1   0   0 |
+           |  0   0  -1 |
+
+
+ gk = [ky, kx, kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0.707107  0.707107  0.      ] ; angle = 1 pi, inversion: False, time reversal: True
+
+ ### 13 
+
+rotation : |  0   0   1 |
+           | -1  -1  -1 |
+           |  1   0   0 |
+
+
+ gk = [-ky+kz, -ky, kx-ky]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0. -1. -0.] ; angle = 1 pi, inversion: False, time reversal: False
+
+ ### 14 
+
+rotation : |  0   0   1 |
+           | -1  -1  -1 |
+           |  1   0   0 |
+
+
+ gk = [ky-kz, ky, -kx+ky]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0. -1. -0.] ; angle = 1 pi, inversion: False, time reversal: True
+
+ ### 15 
+
+rotation : | -1   0   0 |
+           |  0  -1   0 |
+           |  1   1   1 |
+
+
+ gk = [-kx+kz, -ky+kz, kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [ 0.707107  0.707107 -0.      ] ; angle = 1 pi, inversion: False, time reversal: False
+
+ ### 16 
+
+rotation : | -1   0   0 |
+           |  0  -1   0 |
+           |  1   1   1 |
+
+
+ gk = [kx-kz, ky-kz, -kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [ 0.707107  0.707107 -0.      ] ; angle = 1 pi, inversion: False, time reversal: True
+
+ ### 17 
+
+rotation : |  0   0   1 |
+           |  1   0   0 |
+           |  0   1   0 |
+
+
+ gk = [kz, kx, ky]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [0.57735 0.57735 0.57735] ; angle = 2/3 pi, inversion: False, time reversal: False
+
+ ### 18 
+
+rotation : |  0   0   1 |
+           |  1   0   0 |
+           |  0   1   0 |
+
+
+ gk = [-kz, -kx, -ky]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [0.57735 0.57735 0.57735] ; angle = 2/3 pi, inversion: False, time reversal: True
+
+ ### 19 
+
+rotation : | -1   0   0 |
+           |  1   1   1 |
+           |  0   0  -1 |
+
+
+ gk = [-kx+ky, ky, ky-kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0.707107  0.       -0.707107] ; angle = 1 pi, inversion: False, time reversal: False
+
+ ### 20 
+
+rotation : | -1   0   0 |
+           |  1   1   1 |
+           |  0   0  -1 |
+
+
+ gk = [kx-ky, -ky, -ky+kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0.707107  0.       -0.707107] ; angle = 1 pi, inversion: False, time reversal: True
+
+ ### 21 
+
+rotation : | -1  -1  -1 |
+           |  0   1   0 |
+           |  1   0   0 |
+
+
+ gk = [-kz, ky-kz, kx-kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [ 0.57735 -0.57735  0.57735] ; angle = -2/3 pi, inversion: False, time reversal: False
+
+ ### 22 
+
+rotation : | -1  -1  -1 |
+           |  0   1   0 |
+           |  1   0   0 |
+
+
+ gk = [kz, -ky+kz, -kx+kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [ 0.57735 -0.57735  0.57735] ; angle = -2/3 pi, inversion: False, time reversal: True
+
+ ### 23 
+
+rotation : |  0  -1   0 |
+           |  0   0  -1 |
+           |  1   1   1 |
+
+
+ gk = [kx-ky, kx-kz, kx]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [0. 1. 0.] ; angle = 1/2 pi, inversion: False, time reversal: False
+
+ ### 24 
+
+rotation : |  0  -1   0 |
+           |  0   0  -1 |
+           |  1   1   1 |
+
+
+ gk = [-kx+ky, -kx+kz, -kx]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [0. 1. 0.] ; angle = 1/2 pi, inversion: False, time reversal: True
+
+ ### 25 
+
+rotation : |  0   1   0 |
+           | -1  -1  -1 |
+           |  0   0   1 |
+
+
+ gk = [-kx+ky, -kx, -kx+kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0.57735 -0.57735  0.57735] ; angle = 2/3 pi, inversion: False, time reversal: False
+
+ ### 26 
+
+rotation : |  0   1   0 |
+           | -1  -1  -1 |
+           |  0   0   1 |
+
+
+ gk = [kx-ky, kx, kx-kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0.57735 -0.57735  0.57735] ; angle = 2/3 pi, inversion: False, time reversal: True
+
+ ### 27 
+
+rotation : |  0   0  -1 |
+           |  0  -1   0 |
+           | -1   0   0 |
+
+
+ gk = [-kz, -ky, -kx]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0.707107  0.        0.707107] ; angle = 1 pi, inversion: False, time reversal: False
+
+ ### 28 
+
+rotation : |  0   0  -1 |
+           |  0  -1   0 |
+           | -1   0   0 |
+
+
+ gk = [kz, ky, kx]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0.707107  0.        0.707107] ; angle = 1 pi, inversion: False, time reversal: True
+
+ ### 29 
+
+rotation : |  1   0   0 |
+           |  0   0   1 |
+           | -1  -1  -1 |
+
+
+ gk = [kx-ky, -ky+kz, -ky]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0.57735  0.57735  0.57735] ; angle = -2/3 pi, inversion: False, time reversal: False
+
+ ### 30 
+
+rotation : |  1   0   0 |
+           |  0   0   1 |
+           | -1  -1  -1 |
+
+
+ gk = [-kx+ky, ky-kz, ky]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0.57735  0.57735  0.57735] ; angle = -2/3 pi, inversion: False, time reversal: True
+
+ ### 31 
+
+rotation : |  1   1   1 |
+           | -1   0   0 |
+           |  0  -1   0 |
+
+
+ gk = [kz, -kx+kz, -ky+kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0. -1. -0.] ; angle = 1/2 pi, inversion: False, time reversal: False
+
+ ### 32 
+
+rotation : |  1   1   1 |
+           | -1   0   0 |
+           |  0  -1   0 |
+
+
+ gk = [-kz, kx-kz, ky-kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0. -1. -0.] ; angle = 1/2 pi, inversion: False, time reversal: True
+
+ ### 33 
+
+rotation : |  0   1   0 |
+           |  0   0   1 |
+           |  1   0   0 |
+
+
+ gk = [ky, kz, kx]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0.57735 -0.57735 -0.57735] ; angle = 2/3 pi, inversion: False, time reversal: False
+
+ ### 34 
+
+rotation : |  0   1   0 |
+           |  0   0   1 |
+           |  1   0   0 |
+
+
+ gk = [-ky, -kz, -kx]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0.57735 -0.57735 -0.57735] ; angle = 2/3 pi, inversion: False, time reversal: True
+
+ ### 35 
+
+rotation : |  0   0  -1 |
+           | -1   0   0 |
+           |  1   1   1 |
+
+
+ gk = [ky-kz, -kx+ky, ky]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-1. -0.  0.] ; angle = 1/2 pi, inversion: False, time reversal: False
+
+ ### 36 
+
+rotation : |  0   0  -1 |
+           | -1   0   0 |
+           |  1   1   1 |
+
+
+ gk = [-ky+kz, kx-ky, -ky]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-1. -0.  0.] ; angle = 1/2 pi, inversion: False, time reversal: True
+
+ ### 37 
+
+rotation : |  1   0   0 |
+           | -1  -1  -1 |
+           |  0   1   0 |
+
+
+ gk = [kx-kz, -kz, ky-kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [ 0.57735 -0.57735 -0.57735] ; angle = -2/3 pi, inversion: False, time reversal: False
+
+ ### 38 
+
+rotation : |  1   0   0 |
+           | -1  -1  -1 |
+           |  0   1   0 |
+
+
+ gk = [-kx+kz, kz, -ky+kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [ 0.57735 -0.57735 -0.57735] ; angle = -2/3 pi, inversion: False, time reversal: True
+
+ ### 39 
+
+rotation : |  1   1   1 |
+           |  0  -1   0 |
+           |  0   0  -1 |
+
+
+ gk = [kx, kx-ky, kx-kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0.       -0.707107 -0.707107] ; angle = 1 pi, inversion: False, time reversal: False
+
+ ### 40 
+
+rotation : |  1   1   1 |
+           |  0  -1   0 |
+           |  0   0  -1 |
+
+
+ gk = [-kx, -kx+ky, -kx+kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0.       -0.707107 -0.707107] ; angle = 1 pi, inversion: False, time reversal: True
+
+ ### 41 
+
+rotation : |  0   0   1 |
+           |  0   1   0 |
+           | -1  -1  -1 |
+
+
+ gk = [-kx+kz, -kx+ky, -kx]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0.57735  0.57735 -0.57735] ; angle = -2/3 pi, inversion: False, time reversal: False
+
+ ### 42 
+
+rotation : |  0   0   1 |
+           |  0   1   0 |
+           | -1  -1  -1 |
+
+
+ gk = [kx-kz, kx-ky, kx]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0.57735  0.57735 -0.57735] ; angle = -2/3 pi, inversion: False, time reversal: True
+
+ ### 43 
+
+rotation : | -1   0   0 |
+           |  0   0  -1 |
+           |  0  -1   0 |
+
+
+ gk = [-kx, -kz, -ky]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [ 0.        0.707107 -0.707107] ; angle = 1 pi, inversion: False, time reversal: False
+
+ ### 44 
+
+rotation : | -1   0   0 |
+           |  0   0  -1 |
+           |  0  -1   0 |
+
+
+ gk = [kx, kz, ky]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [ 0.        0.707107 -0.707107] ; angle = 1 pi, inversion: False, time reversal: True
+
+ ### 45 
+
+rotation : | -1  -1  -1 |
+           |  1   0   0 |
+           |  0   0   1 |
+
+
+ gk = [-ky, kx-ky, -ky+kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [ 0.57735  0.57735 -0.57735] ; angle = 2/3 pi, inversion: False, time reversal: False
+
+ ### 46 
+
+rotation : | -1  -1  -1 |
+           |  1   0   0 |
+           |  0   0   1 |
+
+
+ gk = [ky, -kx+ky, ky-kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [ 0.57735  0.57735 -0.57735] ; angle = 2/3 pi, inversion: False, time reversal: True
+
+ ### 47 
+
+rotation : |  0  -1   0 |
+           |  1   1   1 |
+           | -1   0   0 |
+
+
+ gk = [-ky+kz, kz, -kx+kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [1. 0. 0.] ; angle = 1/2 pi, inversion: False, time reversal: False
+
+ ### 48 
+
+rotation : |  0  -1   0 |
+           |  1   1   1 |
+           | -1   0   0 |
+
+
+ gk = [ky-kz, -kz, kx-kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [1. 0. 0.] ; angle = 1/2 pi, inversion: False, time reversal: True
+
+ ### 49 
+
+rotation : | -1   0   0 |
+           |  0  -1   0 |
+           |  0   0  -1 |
+
+
+ gk = [-kx, -ky, -kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0.049369 -0.896888 -0.439493] ; angle =  0 , inversion: True, time reversal: False
+
+ ### 50 
+
+rotation : | -1   0   0 |
+           |  0  -1   0 |
+           |  0   0  -1 |
+
+
+ gk = [kx, ky, kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0.049369 -0.896888 -0.439493] ; angle =  0 , inversion: True, time reversal: True
+
+ ### 51 
+
+rotation : | -1  -1  -1 |
+           |  0   0   1 |
+           |  1   0   0 |
+
+
+ gk = [-ky, -ky+kz, kx-ky]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0. -0.  1.] ; angle = 1/2 pi, inversion: True, time reversal: False
+
+ ### 52 
+
+rotation : | -1  -1  -1 |
+           |  0   0   1 |
+           |  1   0   0 |
+
+
+ gk = [ky, ky-kz, -kx+ky]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0. -0.  1.] ; angle = 1/2 pi, inversion: True, time reversal: True
+
+ ### 53 
+
+rotation : |  0  -1   0 |
+           | -1   0   0 |
+           |  1   1   1 |
+
+
+ gk = [-ky+kz, -kx+kz, kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0. -0.  1.] ; angle = 1 pi, inversion: True, time reversal: False
+
+ ### 54 
+
+rotation : |  0  -1   0 |
+           | -1   0   0 |
+           |  1   1   1 |
+
+
+ gk = [ky-kz, kx-kz, -kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0. -0.  1.] ; angle = 1 pi, inversion: True, time reversal: True
+
+ ### 55 
+
+rotation : |  0   0   1 |
+           | -1  -1  -1 |
+           |  0   1   0 |
+
+
+ gk = [-kx+kz, -kx, -kx+ky]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [ 0. -0.  1.] ; angle = -1/2 pi, inversion: True, time reversal: False
+
+ ### 56 
+
+rotation : |  0   0   1 |
+           | -1  -1  -1 |
+           |  0   1   0 |
+
+
+ gk = [kx-kz, kx, kx-ky]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [ 0. -0.  1.] ; angle = -1/2 pi, inversion: True, time reversal: True
+
+ ### 57 
+
+rotation : |  1   1   1 |
+           |  0   0  -1 |
+           |  0  -1   0 |
+
+
+ gk = [kx, kx-kz, kx-ky]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [1. 0. 0.] ; angle = 1 pi, inversion: True, time reversal: False
+
+ ### 58 
+
+rotation : |  1   1   1 |
+           |  0   0  -1 |
+           |  0  -1   0 |
+
+
+ gk = [-kx, -kx+kz, -kx+ky]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [1. 0. 0.] ; angle = 1 pi, inversion: True, time reversal: True
+
+ ### 59 
+
+rotation : |  0   1   0 |
+           |  1   0   0 |
+           |  0   0   1 |
+
+
+ gk = [ky, kx, kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [ 0.707107 -0.707107 -0.      ] ; angle = 1 pi, inversion: True, time reversal: False
+
+ ### 60 
+
+rotation : |  0   1   0 |
+           |  1   0   0 |
+           |  0   0   1 |
+
+
+ gk = [-ky, -kx, -kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [ 0.707107 -0.707107 -0.      ] ; angle = 1 pi, inversion: True, time reversal: True
+
+ ### 61 
+
+rotation : |  0   0  -1 |
+           |  1   1   1 |
+           | -1   0   0 |
+
+
+ gk = [ky-kz, ky, -kx+ky]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [0. 1. 0.] ; angle = 1 pi, inversion: True, time reversal: False
+
+ ### 62 
+
+rotation : |  0   0  -1 |
+           |  1   1   1 |
+           | -1   0   0 |
+
+
+ gk = [-ky+kz, -ky, kx-ky]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [0. 1. 0.] ; angle = 1 pi, inversion: True, time reversal: True
+
+ ### 63 
+
+rotation : |  1   0   0 |
+           |  0   1   0 |
+           | -1  -1  -1 |
+
+
+ gk = [kx-kz, ky-kz, -kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0.707107 -0.707107  0.      ] ; angle = 1 pi, inversion: True, time reversal: False
+
+ ### 64 
+
+rotation : |  1   0   0 |
+           |  0   1   0 |
+           | -1  -1  -1 |
+
+
+ gk = [-kx+kz, -ky+kz, kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0.707107 -0.707107  0.      ] ; angle = 1 pi, inversion: True, time reversal: True
+
+ ### 65 
+
+rotation : |  0   0  -1 |
+           | -1   0   0 |
+           |  0  -1   0 |
+
+
+ gk = [-kz, -kx, -ky]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [0.57735 0.57735 0.57735] ; angle = 2/3 pi, inversion: True, time reversal: False
+
+ ### 66 
+
+rotation : |  0   0  -1 |
+           | -1   0   0 |
+           |  0  -1   0 |
+
+
+ gk = [kz, kx, ky]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [0.57735 0.57735 0.57735] ; angle = 2/3 pi, inversion: True, time reversal: True
+
+ ### 67 
+
+rotation : |  1   0   0 |
+           | -1  -1  -1 |
+           |  0   0   1 |
+
+
+ gk = [kx-ky, -ky, -ky+kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [0.707107 0.       0.707107] ; angle = 1 pi, inversion: True, time reversal: False
+
+ ### 68 
+
+rotation : |  1   0   0 |
+           | -1  -1  -1 |
+           |  0   0   1 |
+
+
+ gk = [-kx+ky, ky, ky-kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [0.707107 0.       0.707107] ; angle = 1 pi, inversion: True, time reversal: True
+
+ ### 69 
+
+rotation : |  1   1   1 |
+           |  0  -1   0 |
+           | -1   0   0 |
+
+
+ gk = [kz, -ky+kz, -kx+kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [ 0.57735 -0.57735  0.57735] ; angle = -2/3 pi, inversion: True, time reversal: False
+
+ ### 70 
+
+rotation : |  1   1   1 |
+           |  0  -1   0 |
+           | -1   0   0 |
+
+
+ gk = [-kz, ky-kz, kx-kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [ 0.57735 -0.57735  0.57735] ; angle = -2/3 pi, inversion: True, time reversal: True
+
+ ### 71 
+
+rotation : |  0   1   0 |
+           |  0   0   1 |
+           | -1  -1  -1 |
+
+
+ gk = [-kx+ky, -kx+kz, -kx]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [0. 1. 0.] ; angle = 1/2 pi, inversion: True, time reversal: False
+
+ ### 72 
+
+rotation : |  0   1   0 |
+           |  0   0   1 |
+           | -1  -1  -1 |
+
+
+ gk = [kx-ky, kx-kz, kx]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [0. 1. 0.] ; angle = 1/2 pi, inversion: True, time reversal: True
+
+ ### 73 
+
+rotation : |  0  -1   0 |
+           |  1   1   1 |
+           |  0   0  -1 |
+
+
+ gk = [kx-ky, kx, kx-kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [ 0.57735  0.57735 -0.57735] ; angle = -2/3 pi, inversion: True, time reversal: False
+
+ ### 74 
+
+rotation : |  0  -1   0 |
+           |  1   1   1 |
+           |  0   0  -1 |
+
+
+ gk = [-kx+ky, -kx, -kx+kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [ 0.57735  0.57735 -0.57735] ; angle = -2/3 pi, inversion: True, time reversal: True
+
+ ### 75 
+
+rotation : |  0   0   1 |
+           |  0   1   0 |
+           |  1   0   0 |
+
+
+ gk = [kz, ky, kx]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [ 0.707107  0.       -0.707107] ; angle = 1 pi, inversion: True, time reversal: False
+
+ ### 76 
+
+rotation : |  0   0   1 |
+           |  0   1   0 |
+           |  1   0   0 |
+
+
+ gk = [-kz, -ky, -kx]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [ 0.707107  0.       -0.707107] ; angle = 1 pi, inversion: True, time reversal: True
+
+ ### 77 
+
+rotation : | -1   0   0 |
+           |  0   0  -1 |
+           |  1   1   1 |
+
+
+ gk = [-kx+ky, ky-kz, ky]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0.57735  0.57735  0.57735] ; angle = -2/3 pi, inversion: True, time reversal: False
+
+ ### 78 
+
+rotation : | -1   0   0 |
+           |  0   0  -1 |
+           |  1   1   1 |
+
+
+ gk = [kx-ky, -ky+kz, -ky]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0.57735  0.57735  0.57735] ; angle = -2/3 pi, inversion: True, time reversal: True
+
+ ### 79 
+
+rotation : | -1  -1  -1 |
+           |  1   0   0 |
+           |  0   1   0 |
+
+
+ gk = [-kz, kx-kz, ky-kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0. -1. -0.] ; angle = 1/2 pi, inversion: True, time reversal: False
+
+ ### 80 
+
+rotation : | -1  -1  -1 |
+           |  1   0   0 |
+           |  0   1   0 |
+
+
+ gk = [kz, -kx+kz, -ky+kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0. -1. -0.] ; angle = 1/2 pi, inversion: True, time reversal: True
+
+ ### 81 
+
+rotation : |  0  -1   0 |
+           |  0   0  -1 |
+           | -1   0   0 |
+
+
+ gk = [-ky, -kz, -kx]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [0.57735 0.57735 0.57735] ; angle = -2/3 pi, inversion: True, time reversal: False
+
+ ### 82 
+
+rotation : |  0  -1   0 |
+           |  0   0  -1 |
+           | -1   0   0 |
+
+
+ gk = [ky, kz, kx]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [0.57735 0.57735 0.57735] ; angle = -2/3 pi, inversion: True, time reversal: True
+
+ ### 83 
+
+rotation : |  0   0   1 |
+           |  1   0   0 |
+           | -1  -1  -1 |
+
+
+ gk = [-ky+kz, kx-ky, -ky]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-1. -0.  0.] ; angle = 1/2 pi, inversion: True, time reversal: False
+
+ ### 84 
+
+rotation : |  0   0   1 |
+           |  1   0   0 |
+           | -1  -1  -1 |
+
+
+ gk = [ky-kz, -kx+ky, ky]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-1. -0.  0.] ; angle = 1/2 pi, inversion: True, time reversal: True
+
+ ### 85 
+
+rotation : | -1   0   0 |
+           |  1   1   1 |
+           |  0  -1   0 |
+
+
+ gk = [-kx+kz, kz, -ky+kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0.57735  0.57735  0.57735] ; angle = 2/3 pi, inversion: True, time reversal: False
+
+ ### 86 
+
+rotation : | -1   0   0 |
+           |  1   1   1 |
+           |  0  -1   0 |
+
+
+ gk = [kx-kz, -kz, ky-kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0.57735  0.57735  0.57735] ; angle = 2/3 pi, inversion: True, time reversal: True
+
+ ### 87 
+
+rotation : | -1  -1  -1 |
+           |  0   1   0 |
+           |  0   0   1 |
+
+
+ gk = [-kx, -kx+ky, -kx+kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [0.       0.707107 0.707107] ; angle = 1 pi, inversion: True, time reversal: False
+
+ ### 88 
+
+rotation : | -1  -1  -1 |
+           |  0   1   0 |
+           |  0   0   1 |
+
+
+ gk = [kx, kx-ky, kx-kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [0.       0.707107 0.707107] ; angle = 1 pi, inversion: True, time reversal: True
+
+ ### 89 
+
+rotation : |  0   0  -1 |
+           |  0  -1   0 |
+           |  1   1   1 |
+
+
+ gk = [kx-kz, kx-ky, kx]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0.57735  0.57735 -0.57735] ; angle = -2/3 pi, inversion: True, time reversal: False
+
+ ### 90 
+
+rotation : |  0   0  -1 |
+           |  0  -1   0 |
+           |  1   1   1 |
+
+
+ gk = [-kx+kz, -kx+ky, -kx]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [-0.57735  0.57735 -0.57735] ; angle = -2/3 pi, inversion: True, time reversal: True
+
+ ### 91 
+
+rotation : |  1   0   0 |
+           |  0   0   1 |
+           |  0   1   0 |
+
+
+ gk = [kx, kz, ky]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0.       -0.707107  0.707107] ; angle = 1 pi, inversion: True, time reversal: False
+
+ ### 92 
+
+rotation : |  1   0   0 |
+           |  0   0   1 |
+           |  0   1   0 |
+
+
+ gk = [-kx, -kz, -ky]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [-0.       -0.707107  0.707107] ; angle = 1 pi, inversion: True, time reversal: True
+
+ ### 93 
+
+rotation : |  1   1   1 |
+           | -1   0   0 |
+           |  0   0  -1 |
+
+
+ gk = [ky, -kx+ky, ky-kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [ 0.57735  0.57735 -0.57735] ; angle = 2/3 pi, inversion: True, time reversal: False
+
+ ### 94 
+
+rotation : |  1   1   1 |
+           | -1   0   0 |
+           |  0   0  -1 |
+
+
+ gk = [-ky, kx-ky, -ky+kz]
+
+translation         :  [   0.2500   0.2500   0.2500 ] 
+
+axis: [ 0.57735  0.57735 -0.57735] ; angle = 2/3 pi, inversion: True, time reversal: True
+
+ ### 95 
+
+rotation : |  0   1   0 |
+           | -1  -1  -1 |
+           |  1   0   0 |
+
+
+ gk = [ky-kz, -kz, kx-kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [1. 0. 0.] ; angle = 1/2 pi, inversion: True, time reversal: False
+
+ ### 96 
+
+rotation : |  0   1   0 |
+           | -1  -1  -1 |
+           |  1   0   0 |
+
+
+ gk = [-ky+kz, kz, -kx+kz]
+
+translation         :  [   0.0000   0.0000   0.0000 ] 
+
+axis: [1. 0. 0.] ; angle = 1/2 pi, inversion: True, time reversal: True
+
+---------- HS-KPOINTS FOR IRREP IDENTIFICATION ----------
+
+
+Change of coordinates from conventional to DFT cell:
+
+		|  1.00  0.00  0.00 |
+		|  0.00  1.00  0.00 |
+		|  0.00  0.00  1.00 |
+
+
+
+Change of coordinates from DFT to conventional cell:
+
+		|  1.00  0.00  0.00 |
+		|  0.00  1.00  0.00 |
+		|  0.00  0.00  1.00 |
+
+
+Coordinates in symmetry tables:
+
+	 GM :  0.000000  0.000000  0.000000
+	 L  :  0.500000  0.500000  0.500000
+	 W  :  0.500000  1.000000  0.000000
+	 X  :  0.000000  1.000000  0.000000
+
+Coordinates for DFT calculation:
+
+	 GM :  0.000000  0.000000  0.000000
+	 L  :  0.500000  0.500000  0.500000
+	 W  :  0.500000  0.000000  0.000000
+	 X  :  0.000000  0.000000  0.000000

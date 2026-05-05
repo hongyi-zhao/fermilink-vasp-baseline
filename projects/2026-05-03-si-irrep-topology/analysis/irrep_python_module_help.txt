@@ -1,0 +1,1 @@
+/home/werner/.pyenv/versions/datasci/bin/python: No module named irrep.__main__; 'irrep' is a package and cannot be directly executed
