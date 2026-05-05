@@ -19,6 +19,9 @@ INPUTS = PROJECT / "inputs"
 INPUTS.mkdir(exist_ok=True)
 PP_ROOT = Path(os.environ.get("VASP_PP", "/home/werner/Public/hpc/vasp/pot")).expanduser()
 POTCAR_SRC = PP_ROOT / "potpaw_PBE.64" / "Si" / "POTCAR"
+POINTS_PER_SEGMENT = 36
+# NBANDS=12 is enough for the Si indirect gap, but not for a clean plot to 10 eV.
+BAND_NBANDS = 24
 
 
 def primitive_si() -> Structure:
@@ -65,7 +68,7 @@ def write_incar_files() -> None:
             "ISYM": 0,
             "LCHARG": False,
             "LORBIT": 11,
-            "NBANDS": 12,
+            "NBANDS": BAND_NBANDS,
         }
     )
     Incar(scf).write_file(INPUTS / "INCAR_scf")
@@ -83,10 +86,11 @@ def write_kpoints_band(structure: Structure) -> None:
         ("K", coords["K"]),
         ("G", coords["\\Gamma"]),
     ]
-    points_per_segment = 36
     with (INPUTS / "KPOINTS_band").open("w") as handle:
-        handle.write("Si band path L-G-X-W-K-G, 36 points per segment\n")
-        handle.write(f"{points_per_segment}\n")
+        handle.write(
+            f"Si band path L-G-X-W-K-G, {POINTS_PER_SEGMENT} points per segment\n"
+        )
+        handle.write(f"{POINTS_PER_SEGMENT}\n")
         handle.write("Line-mode\n")
         handle.write("reciprocal\n")
         for (start_label, start), (end_label, end) in zip(requested[:-1], requested[1:]):

@@ -18,7 +18,7 @@
     "cbm_kpoint_label": null
   },
   "n_kpoints": 180,
-  "n_bands": 12,
+  "n_bands": 24,
   "nelect": 8,
   "occupied_bands_assumed": 4,
   "points_per_segment": 36,
@@ -82,16 +82,25 @@
         "exit": 0
       },
       "band": {
-        "elapsed_sec": 7.0,
+        "elapsed_sec": 10.0,
+        "exit": 0
+      },
+      "postprocess": {
+        "elapsed_sec": 2.0,
         "exit": 0
       }
     },
-    "scf_outcar_elapsed": 2.191,
-    "band_outcar_elapsed": 6.082
+    "scf_outcar_elapsed": 1.859,
+    "band_outcar_elapsed": 9.988
   },
   "encut_ev": 400.0,
   "potcar_enmax_ev": 245.345,
   "encut_over_enmax": 1.6303572520328518,
+  "plot_energy_window_ev": [
+    -13.0,
+    5.0
+  ],
+  "plot_artifact_fix": "Plot window reduced to valence plus low conduction bands; plot lines are broken by path segment and masked outside the plotted energy window.",
   "plot": "analysis/bands.png",
   "success_criteria_met": true
 }

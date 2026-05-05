@@ -96,10 +96,14 @@ run_band() {
 postprocess() {
     "$PYTHON" scripts/postprocess_bands.py > logs/postprocess.log 2>&1
     # Perf logger reads canonical subdirectory artifacts explicitly; no root-level facade links.
-    export PERF_OUTCAR_PATH=bands/OUTCAR
-    export PERF_INCAR_PATH=inputs/INCAR_band
-    export PERF_STAGES_PATH=logs/stage_times.tsv
-    "$PYTHON" scripts/_perf_append.py > logs/perf_append.log 2>&1
+    if [[ "${FL_SKIP_PERF_APPEND:-0}" == "1" ]]; then
+        printf "skipped because FL_SKIP_PERF_APPEND=1\n" > logs/perf_append.log
+    else
+        export PERF_OUTCAR_PATH=bands/OUTCAR
+        export PERF_INCAR_PATH=inputs/INCAR_band
+        export PERF_STAGES_PATH=logs/stage_times.tsv
+        "$PYTHON" scripts/_perf_append.py > logs/perf_append.log 2>&1
+    fi
 }
 
 stage module load_modules

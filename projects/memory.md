@@ -2,7 +2,7 @@
 
 - schema_version: 1
 - started_at_utc: 2026-05-02T09:08:18.602360Z
-- last_updated_utc: 2026-05-05T09:11:38Z
+- last_updated_utc: 2026-05-05T09:54:12Z
 - prompt_source: /home/werner/fermilink/vasp-demo/goal.md
 
 ## Original request
@@ -138,11 +138,11 @@ After this passes, next quest is FeTaSe2 HSE+SOC reproduction.
 
 ### Plan
 - [x] Read `projects/memory.md` before acting.
-- [x] Patch `_perf_append.py` to accept `PERF_INCAR_PATH` and `PERF_STAGES_PATH` alongside `PERF_OUTCAR_PATH`.
-- [x] Update `projects/2026-05-02-si-bands-vasp/scripts/run.sh` to use explicit perf env vars and stop creating root-level facade symlinks.
-- [x] Delete the 20 root-level symlinks from `projects/2026-05-02-si-bands-vasp/`.
-- [x] Update `SITE_RUNBOOK.md` and `projects/memory.md`.
-- [x] Validate with `sbatch` and commit.
+- [x] Change the Si band plot window in `projects/2026-05-02-si-bands-vasp/scripts/postprocess_bands.py` to `[-13, 5]` eV relative to VBM.
+- [x] Regenerate `projects/2026-05-02-si-bands-vasp/analysis/bands.png` with `postprocess_bands.py` only, without submitting `sbatch`.
+- [x] Verify the refreshed `analysis/band_analysis.json` still reports the accepted Si gap/topology.
+- [x] Update `projects/memory.md`.
+- [x] Commit the finalized plot-only update.
 
 ### Progress log
 - initialized
@@ -159,14 +159,16 @@ After this passes, next quest is FeTaSe2 HSE+SOC reproduction.
 - 2026-05-05T08:40:12Z: Patched the Si-band generator/postprocessor/run script back to the requested `NBANDS=12` baseline, regenerated inputs, submitted job `26550`, and verified the accepted rerun (`gap=0.572568 eV`, VBM at Gamma, CBM at 0.828571 on G-X, `cleanup_decision: kept WAVECAR`). Refreshed `summary.md`, root deliverable symlinks, and the perf-log line. Touched `projects/2026-05-02-si-bands-vasp/{scripts,generation outputs,summary.md}` and `perf_log.jsonl`.
 - 2026-05-05T08:59:36Z: Confirmed 20 root-level symlinks in `projects/2026-05-02-si-bands-vasp/`, including `INCAR`, `KPOINTS_band`, `run.sh`, and `_perf_append.py`; recorded that job `26550` added/refreshed this facade to work around `_perf_append.py` hard-coded reads from `cwd/INCAR` and `cwd/stage_times.tsv`. Touched `projects/memory.md`.
 - 2026-05-05T09:11:38Z: Patched `_perf_append.py` to accept `PERF_INCAR_PATH` and `PERF_STAGES_PATH`, patched `projects/2026-05-02-si-bands-vasp/scripts/run.sh` to export `PERF_OUTCAR_PATH=bands/OUTCAR`, `PERF_INCAR_PATH=inputs/INCAR_band`, and `PERF_STAGES_PATH=logs/stage_times.tsv`, deleted the 20 root-level symlinks from `projects/2026-05-02-si-bands-vasp/`, and updated `SITE_RUNBOOK.md`. Submitted job `26551`; `sacct` reported `COMPLETED 0:0`, `perf_log.jsonl` recorded `nbands=12`, `kpar=2`, `ncore=4`, `stages` populated, and `outcar=bands/OUTCAR`; `find projects/2026-05-02-si-bands-vasp -maxdepth 1 -type l` returned no root symlinks. Touched `_perf_append.py`, `SITE_RUNBOOK.md`, `projects/2026-05-02-si-bands-vasp/scripts/run.sh`, `projects/2026-05-02-si-bands-vasp/summary.md`, `projects/2026-05-02-si-bands-vasp/analysis/band_analysis.json`, `projects/2026-05-02-si-bands-vasp/{scf,bands}/OUTCAR`, `perf_log.jsonl`, and `projects/memory.md`.
+- 2026-05-05T09:46:15Z: Backed up the `NBANDS=12` plot artifacts to `projects/2026-05-02-si-bands-vasp/.backup-before-nbands24-20260505/`, patched `projects/2026-05-02-si-bands-vasp/scripts/generate_inputs.py` to set `NBANDS=24`, patched `projects/2026-05-02-si-bands-vasp/scripts/postprocess_bands.py` to mask plot values outside `[-13, 10]` eV and break lines at path segment boundaries, and added `FL_SKIP_PERF_APPEND=1` support in `projects/2026-05-02-si-bands-vasp/scripts/run.sh`. Submitted job `26552` with perf append skipped; `sacct` reported `COMPLETED 0:0`, `inputs/INCAR_band` and `bands/OUTCAR` both showed `NBANDS=24`, `analysis/band_analysis.json` reported `gap=0.572568 eV`, VBM at Gamma, CBM at fraction `0.828571` on `G-X`, and `analysis/bands.png` visually no longer showed the old 5-10 eV jagged artifacts. Touched `projects/2026-05-02-si-bands-vasp/{inputs/INCAR_band,scripts/generate_inputs.py,scripts/postprocess_bands.py,scripts/run.sh,analysis/band_analysis.json,analysis/bands.png,summary.md,scf/OUTCAR,bands/OUTCAR,bands/OSZICAR,logs/stage_times.tsv,logs/perf_append.log}` and `projects/memory.md`.
+- 2026-05-05T09:54:12Z: Patched `projects/2026-05-02-si-bands-vasp/scripts/postprocess_bands.py` so the plotted/masked energy window is `[-13.0, 5.0]` eV relative to VBM, then ran `/home/werner/.pyenv/versions/datasci/bin/python projects/2026-05-02-si-bands-vasp/scripts/postprocess_bands.py` only; no `sbatch` was submitted. Refreshed `projects/2026-05-02-si-bands-vasp/analysis/bands.png`, `analysis/band_analysis.json` (`plot_energy_window_ev=[-13.0, 5.0]`, `gap=0.572568 eV`, VBM Gamma, CBM on `G-X` at fraction `0.828571`), and `summary.md`. Touched `projects/2026-05-02-si-bands-vasp/{scripts/postprocess_bands.py,analysis/bands.png,analysis/band_analysis.json,summary.md}` and `projects/memory.md`.
 
 ## Long-Term Memory (Persistent)
 
 ### File map
 - (path | purpose | notes)
-- projects/2026-05-02-si-bands-vasp/generate_inputs.py | reproducible input generator | writes primitive 2-atom Si POSCAR, 8x8x8 Gamma KPOINTS, L-G-X-W-K-G line-mode KPOINTS, INCARs, and `.64` Si POTCAR.
-- projects/2026-05-02-si-bands-vasp/run.sh | single-node SLURM pipeline | loads oneapi then VASP 6.6.0, runs prepare/SCF/band/postprocess stages with 8 CPUs, KPAR=2, NCORE=4.
-- projects/2026-05-02-si-bands-vasp/postprocess_bands.py | result parser/plotter | parses `vasprun_band.xml` with pymatgen, writes `band_analysis.json` and `bands.png`.
+- projects/2026-05-02-si-bands-vasp/generate_inputs.py | reproducible input generator | writes primitive 2-atom Si POSCAR, 8x8x8 Gamma KPOINTS, L-G-X-W-K-G line-mode KPOINTS, INCARs with `NBANDS=24` for the band run, and `.64` Si POTCAR.
+- projects/2026-05-02-si-bands-vasp/run.sh | single-node SLURM pipeline | loads oneapi then VASP 6.6.0, runs prepare/SCF/band/postprocess stages with 8 CPUs, KPAR=2, NCORE=4, and supports `FL_SKIP_PERF_APPEND=1` for plot-only reruns.
+- projects/2026-05-02-si-bands-vasp/postprocess_bands.py | result parser/plotter | parses `vasprun_band.xml` with pymatgen, writes `band_analysis.json` and `bands.png`, masks plot values outside `[-13, 5]` eV, and breaks lines at path segment boundaries.
 - _perf_append.py | shared VASP perf logger | supports `PERF_OUTCAR_PATH`, `PERF_INCAR_PATH`, and `PERF_STAGES_PATH`, so canonical subdirectory projects do not need root-level compatibility symlinks for perf logging.
 - projects/2026-05-02-si-bands-vasp/scripts/_perf_append.py | symlink to shared perf logger | points to `../../../_perf_append.py`; this script-level symlink remains part of the canonical `scripts/` layout.
 
@@ -181,6 +183,8 @@ After this passes, next quest is FeTaSe2 HSE+SOC reproduction.
 - 26542 | Si PBE band structure smoke test final artifact pass | completed and accepted | projects/2026-05-02-si-bands-vasp/WAVECAR | repeated accepted run with `LWAVE=True` so cleanup rule could keep a real `WAVECAR`.
 - 26550 | Si PBE band structure smoke test requested baseline refresh | completed and accepted | projects/2026-05-02-si-bands-vasp/analysis/band_analysis.json | reran the requested `NBANDS=12` baseline after a later cosmetic `NBANDS=24` drift; added/refreshed 20 root-level symlinks as a facade for deliverables and `_perf_append.py`; perf log now records `nbands=12`, `kpar=2`, `ncore=4`, `cpus=8`, and `outcar=bands/OUTCAR`.
 - 26551 | Si PBE band structure perf-routing validation | completed and accepted | projects/2026-05-02-si-bands-vasp/analysis/band_analysis.json | validated `_perf_append.py` explicit `PERF_OUTCAR_PATH`/`PERF_INCAR_PATH`/`PERF_STAGES_PATH` routing after deleting all 20 root-level symlinks; perf log records `nbands=12`, `kpar=2`, `ncore=4`, non-null stages, and `outcar=bands/OUTCAR`.
+- 26552 | Si PBE band plot high-energy artifact fix | completed and accepted | projects/2026-05-02-si-bands-vasp/analysis/bands.png | reran with `NBANDS=24` and segmented/masked plotting to remove nonphysical 5-10 eV jagged artifacts while preserving the accepted low-energy gap/topology; perf append was skipped with `FL_SKIP_PERF_APPEND=1`.
+- postprocess-20260505-ylim5 | Si PBE band plot window reduction | completed and accepted; no SLURM job submitted | projects/2026-05-02-si-bands-vasp/analysis/bands.png | reused existing `NBANDS=24` job `26552` data and regenerated only the plot/analysis with y-axis window `[-13, 5]` eV relative to VBM.
 
 ### Key results
 - (result_id | metric | value | conditions | evidence_path)
@@ -189,6 +193,7 @@ After this passes, next quest is FeTaSe2 HSE+SOC reproduction.
 - si-vasp-qe-parity-2026-05-02 | VASP minus QE gap delta | -0.002432 eV | QE reference gap 0.575 eV from paired Si baseline; within 0.1 eV acceptance by a wide margin | projects/2026-05-02-si-bands-vasp/band_analysis.json
 - si-vasp-baseline-refresh-2026-05-05 | deliverable and perf refresh | job `26550` restored the requested baseline and produced a nonblank `analysis/bands.png`, `cleanup_decision: kept WAVECAR`, and a perf-log row with `nbands=12`, `kpar=2`, `ncore=4` | accepted rerun after later project drift | projects/2026-05-02-si-bands-vasp/summary.md
 - si-vasp-perf-routing-2026-05-05 | env-var perf routing without root symlinks | job `26551` completed with no root-level symlinks and recorded `nbands=12`, `kpar=2`, `ncore=4`, non-null stage timings, and `outcar=bands/OUTCAR`; physics remained accepted with gap `0.572568 eV` | explicit perf paths `PERF_OUTCAR_PATH=bands/OUTCAR`, `PERF_INCAR_PATH=inputs/INCAR_band`, `PERF_STAGES_PATH=logs/stage_times.tsv` | perf_log.jsonl
+- si-vasp-clean-low-conduction-plot-2026-05-05 | clean band plot to 5 eV | local postprocess-only regeneration produced `analysis/bands.png` with `n_bands=24`, gap `0.572568 eV`, VBM at Gamma, CBM on `G-X` at fraction `0.828571` | existing VASP 6.6.0 PBE Si data from job `26552`; segmented/masked plotting window `[-13, 5]` eV relative to VBM; no new `sbatch` | projects/2026-05-02-si-bands-vasp/analysis/band_analysis.json
 
 ### Parameter source mapping
 - (run_id | parameter_or_setting | value | source | evidence_path | notes)
@@ -196,6 +201,8 @@ After this passes, next quest is FeTaSe2 HSE+SOC reproduction.
 - 2026-05-02-si-bands-vasp | SCF settings | ENCUT=400, EDIFF=1e-6, ISMEAR=0, SIGMA=0.05, 8x8x8 Gamma, LCHARG=True | original request | projects/2026-05-02-si-bands-vasp/INCAR_scf | generated and reviewed before submission.
 - 2026-05-02-si-bands-vasp | band path | L-G-X-W-K-G, 36 points/segment, ICHARG=11 | original request plus pymatgen HighSymmKpath coordinates | projects/2026-05-02-si-bands-vasp/KPOINTS_band | band INCAR sets ISYM=0.
 - 2026-05-02-si-bands-vasp | accepted band settings | `ICHARG=11`, `ISYM=0`, `NBANDS=12`, `LWAVE=True`, `LORBIT=11` | original request plus prior passing local recipe for Si parity | projects/2026-05-02-si-bands-vasp/INCAR_band | `NBANDS=12` was required to recover the expected indirect gap.
+- 2026-05-02-si-bands-vasp | high-energy plot band settings | `ICHARG=11`, `ISYM=0`, `NBANDS=24`, `LWAVE=True`, `LORBIT=11` | user diagnosis that `NBANDS=12` underfilled the 5-10 eV empty-band region | projects/2026-05-02-si-bands-vasp/inputs/INCAR_band | `NBANDS=12` is enough for the Si gap, but `NBANDS=24` is now the project source setting for plots extending to 10 eV.
+- 2026-05-02-si-bands-vasp | current plot energy window | `[-13, 5]` eV relative to VBM | user request to show only true valence plus low conduction bands and avoid the underfilled 5-10 eV region | projects/2026-05-02-si-bands-vasp/scripts/postprocess_bands.py; projects/2026-05-02-si-bands-vasp/analysis/band_analysis.json | regenerated by postprocess only from existing job `26552` data; no `sbatch`.
 - 2026-05-02-si-bands-vasp | SLURM resources | partition=batch, nodes=1, ntasks=1, cpus-per-task=8, time=24:00:00 | execution target and prior perf log | projects/2026-05-02-si-bands-vasp/run.sh | prior same-system perf favored 8 CPUs, KPAR=2, NCORE=4.
 - 2026-05-02-si-bands-vasp | perf logger routing | `PERF_OUTCAR_PATH=bands/OUTCAR`, `PERF_INCAR_PATH=inputs/INCAR_band`, `PERF_STAGES_PATH=logs/stage_times.tsv` | explicit env-var routing added to `_perf_append.py` and `projects/2026-05-02-si-bands-vasp/scripts/run.sh` | perf_log.jsonl | validated by job `26551`; no root-level facade symlinks are required or present.
 
@@ -209,8 +216,9 @@ After this passes, next quest is FeTaSe2 HSE+SOC reproduction.
 - 2026-05-02-si-bands-vasp | a band run with default `NBANDS=8` underestimates the Si indirect gap and shifts the apparent VBM away from Gamma | invalidates QE parity and gap acceptance checks | resolved by accepted reruns with `NBANDS=12` and direct `EIGENVAL` path analysis | closed.
 - 2026-05-02-si-bands-vasp | later cosmetic reruns can drift the checked-in scripts and summary away from the requested accepted baseline even when the physics stays fine | can leave the project in an inconsistent state (`NBANDS=24`, stale summary text, incomplete perf metadata) for future loops | job `26550` restored the requested baseline and a consistent deliverable/perf surface | closed.
 - 2026-05-02-si-bands-vasp | `_perf_append.py` previously hard-coded reads from `cwd/INCAR` and `cwd/stage_times.tsv` when recording KPAR/NCORE/stages | without explicit routing, perf rows could degrade to `kpar=1`, `ncore=1`, and `stages=null` even when the run itself was correct | added `PERF_INCAR_PATH` and `PERF_STAGES_PATH`, removed the 20 root-level symlinks, and validated job `26551` perf output | closed.
+- 2026-05-02-si-bands-vasp | `NBANDS=12` gives the accepted low-energy Si gap but underfills unoccupied bands for a clean 5-10 eV plot | can create nonphysical jagged high-energy plot artifacts if the plotted window includes underfilled high conduction bands | current deliverable restricts the y-axis to `[-13, 5]` eV and keeps segmented/masked plotting; `NBANDS=24` remains the source setting | closed by postprocess-only refresh on 2026-05-05.
 
 ### Suggested skills updates
 - (<package_id> | issue_pattern | proposed_skill_update | evidence | status)
-- vasp-demo | single-node SLURM launcher ambiguity and Si band underfill | encode `SLURM_SUBMIT_DIR` usage, absolute Intel MPI launcher, and `NBANDS=12` for small Si band baselines in package guidance | jobs 26536-26540 failed or misanalyzed until these fixes were applied; jobs 26541-26542 passed | open
+- vasp-demo | single-node SLURM launcher ambiguity and Si band underfill | encode `SLURM_SUBMIT_DIR` usage, absolute Intel MPI launcher, `NBANDS=12` as the minimum for Si gap/topology checks, `NBANDS=24` when high conduction bands are needed, and `[-13, 5]` eV as the clean default plot window for this Si baseline | jobs 26536-26540 failed or misanalyzed until the minimum-band fixes were applied; job 26552 and the postprocess-only `[-13, 5]` refresh show why the plotted energy range must match available bands | open
 - vasp-demo | perf logging assumes root-level `INCAR` and `stage_times.tsv` | teach VASP run templates to export `PERF_OUTCAR_PATH`, `PERF_INCAR_PATH`, and `PERF_STAGES_PATH` instead of creating root-level facade symlinks | job 26551 validated explicit perf routing after deleting all 20 root-level symlinks | resolved in repo; propagate to package skills/templates if present.

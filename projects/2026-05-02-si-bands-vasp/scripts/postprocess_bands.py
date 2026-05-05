@@ -37,6 +37,11 @@ NELECT = 8
 OCC_BANDS = NELECT // 2
 QE_GAP_EV = 0.575
 GAP_WINDOW_EV = (0.570, 0.575)
+PLOT_YLIM_EV = (-13.0, 5.0)
+DEFAULT_PROMPT = (
+    "Limit analysis/bands.png to -13 to 5 eV relative to VBM and regenerate "
+    "the plot from the existing NBANDS=24 band data without rerunning sbatch."
+)
 CLEANUP_TERMS = (
     "nscf",
     "bands",
@@ -218,6 +223,7 @@ def write_plot(
     x: np.ndarray,
     energies: np.ndarray,
     labels: list[str],
+    points_per_segment: int,
     vbm_idx: int,
     cbm_idx: int,
     vbm: float,
@@ -238,15 +244,20 @@ def write_plot(
             tick_labels.append(pretty)
 
     fig, ax = plt.subplots(figsize=(7.2, 4.8), dpi=180)
+    y_min, y_max = PLOT_YLIM_EV
     for band_idx in range(nbands):
-        ax.plot(x, energies[:, band_idx] - vbm, color="#1b4f72", lw=1.0)
+        y = energies[:, band_idx] - vbm
+        y = np.where((y >= y_min) & (y <= y_max), y, np.nan)
+        for start in range(0, len(x), points_per_segment):
+            stop = min(start + points_per_segment, len(x))
+            ax.plot(x[start:stop], y[start:stop], color="#1b4f72", lw=1.0)
     ax.axhline(0.0, color="#2c3e50", lw=0.8, ls="--")
     for xpos in tick_positions:
         ax.axvline(xpos, color="#a6acaf", lw=0.6)
     ax.scatter([x[vbm_idx]], [0.0], s=26, color="#117a65", zorder=5, label="VBM")
     ax.scatter([x[cbm_idx]], [gap], s=26, color="#b03a2e", zorder=5, label="CBM")
     ax.set_xlim(float(x[0]), float(x[-1]))
-    ax.set_ylim(-13.0, 10.0)
+    ax.set_ylim(*PLOT_YLIM_EV)
     ax.set_xticks(tick_positions)
     ax.set_xticklabels(tick_labels)
     ax.set_ylabel("Energy - VBM (eV)")
@@ -278,8 +289,8 @@ def write_summary(analysis: dict[str, object]) -> None:
     status = "done" if analysis["success_criteria_met"] else "failed"
     cleanup_decision = cleanup_wavecar()
     summary = f"""
-- prompt: Compute the electronic band structure of bulk silicon diamond with PBE in VASP 6.6.0 along L-G-X-W-K-G and cross-validate against the QE baseline.
--procedures: Generated VASP inputs in inputs/ for SCF (`8x8x8` Gamma-centered, `ENCUT=400 eV`, `EDIFF=1e-6`, `ISMEAR=0`, `SIGMA=0.05`, `LCHARG=.TRUE.`, `KPAR=2`, `NCORE=4`) and non-SCF band calculation (`ICHARG=11`, `NBANDS=12`, 36 points/segment line-mode `L-G-X-W-K-G` path). Stages run in scf/ and bands/ subdirs with symlinked inputs. Single-node SLURM chain with `oneapi/2024.2.0`, `vasp/6.6.0-oneapi.2024.2.0`, `--nodes=1 --ntasks=1 --cpus-per-task=8`, and Intel MPI `mpirun -np "${{SLURM_CPUS_PER_TASK}}"`.
+- prompt: {DEFAULT_PROMPT}
+-procedures: Generated VASP inputs in inputs/ for SCF (`8x8x8` Gamma-centered, `ENCUT=400 eV`, `EDIFF=1e-6`, `ISMEAR=0`, `SIGMA=0.05`, `LCHARG=.TRUE.`, `KPAR=2`, `NCORE=4`) and non-SCF band calculation (`ICHARG=11`, `NBANDS={analysis["n_bands"]}`, 36 points/segment line-mode `L-G-X-W-K-G` path). Stages run in scf/ and bands/ subdirs with symlinked inputs. Single-node SLURM chain with `oneapi/2024.2.0`, `vasp/6.6.0-oneapi.2024.2.0`, `--nodes=1 --ntasks=1 --cpus-per-task=8`, and Intel MPI `mpirun -np "${{SLURM_CPUS_PER_TASK}}"`. Plotting masks values outside {PLOT_YLIM_EV[0]:.1f} to {PLOT_YLIM_EV[1]:.1f} eV and breaks lines at path segment boundaries.
 - generated data: `scf/OUTCAR`, `bands/OUTCAR`, `scf/vasprun.xml`, `bands/vasprun.xml`, `bands/EIGENVAL`, `analysis/band_analysis.json`, `logs/stage_times.tsv`, `analysis/module_list.txt`; SCF electronic iterations = {analysis["scf_iter"]}, indirect gap = {analysis["indirect_gap_ev"]:.6f} eV.
 - generated figure: `analysis/bands.png`
 - key result: VBM at {vbm["expected_location"] if vbm["is_gamma"] else vbm["path_location"]["segment"]}; CBM on {cbm["path_location"]["segment"]} at fraction {cbm["path_location"]["fraction"]:.6f}; QE reference gap = {QE_GAP_EV:.3f} eV, VASP-QE gap delta = {analysis["gap_delta_vs_qe_ev"]:.6f} eV.
@@ -313,7 +324,7 @@ def main() -> None:
     cbm_energy = float(cbm_by_k[cbm_idx])
     gap = cbm_energy - vbm_energy
 
-    write_plot(x, energies, labels, vbm_idx, cbm_idx, vbm_energy, gap, nbands)
+    write_plot(x, energies, labels, points_per_segment, vbm_idx, cbm_idx, vbm_energy, gap, nbands)
     scf_iter = parse_scf_iterations()
     enmax = parse_enmax()
     cbm_path = segment_position(cbm_idx, points_per_segment)
@@ -367,6 +378,8 @@ def main() -> None:
         "encut_ev": 400.0,
         "potcar_enmax_ev": enmax,
         "encut_over_enmax": 400.0 / enmax if enmax else None,
+        "plot_energy_window_ev": list(PLOT_YLIM_EV),
+        "plot_artifact_fix": "Plot window reduced to valence plus low conduction bands; plot lines are broken by path segment and masked outside the plotted energy window.",
         "plot": "analysis/bands.png",
     }
     analysis["success_criteria_met"] = bool(
